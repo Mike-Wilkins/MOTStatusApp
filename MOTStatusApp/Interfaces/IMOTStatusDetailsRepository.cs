@@ -10,5 +10,8 @@ namespace MOTStatusWebApi.Interfaces
         MOTStatusDetails GetRegistrationNumber(string registrationNumber);
         bool StatusDetailExists(int Id);
         bool StatusDetailExists(string registrationNumber);
+
+        MOTStatusDetails Add(MOTStatusDetails details);
+        bool Save();
     }
 }

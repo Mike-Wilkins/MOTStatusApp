@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string? RegistrationNumber { get; set; }
         public string? Make { get; set; }
-        public DateTime DateOfRegistration { get; set; }
+        public string?  DateOfRegistration { get; set; }
         public string? CylinderCapacity { get; set; }
         public string? CO2Emissions { get; set; }
         public string? FuelType { get; set; }
@@ -17,11 +17,11 @@
         public string? VehicleTypeApproval { get; set; }
         public string? WheelPlan { get; set; }
         public string? RevenueWeight { get; set; }
-        public DateTime DateOfLastV5C { get; set; }
+        public string? DateOfLastV5C { get; set; }
         public bool Taxed { get; set; }
-        public DateTime TaxDueDate { get; set; }
+        public string TaxDueDate { get; set; }
         public bool MOTed { get; set; }
-        public DateTime MOTDueDate { get; set; }
+        public string MOTDueDate { get; set; }
 
     }
 }

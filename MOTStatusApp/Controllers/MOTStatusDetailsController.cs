@@ -27,17 +27,17 @@ namespace MOTStatusWebApi.Controllers
             return Ok(statusDetails);
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("{customerId}")]
         [ProducesResponseType(200, Type = typeof(MOTStatusDetails))]
         [ProducesResponseType(400)]
-        public IActionResult GetStatusDetail(int id)
+        public IActionResult GetStatusDetail(int customerId)
         {
-            if(!_statusDetailsRepository.StatusDetailExists(id))
+            if (!_statusDetailsRepository.StatusDetailExists(customerId))
                 return NotFound();
 
-            var statusDetail = _statusDetailsRepository.GetStatusDetail(id);
+            var statusDetail = _statusDetailsRepository.GetStatusDetail(customerId);
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest();
 
             return Ok(statusDetail);
@@ -57,6 +57,32 @@ namespace MOTStatusWebApi.Controllers
                 return BadRequest();
 
             return Ok(statusDetail);
+        }
+
+        [HttpPost("create")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateMOTStatusDetail(MOTStatusDetails detailsCreate)
+        {
+            if(detailsCreate == null)
+                return BadRequest(ModelState);
+
+            var details = _statusDetailsRepository.GetStatusDetails().
+                Where(d => d.RegistrationNumber == detailsCreate.RegistrationNumber).FirstOrDefault();
+
+            if (details != null)
+            {
+                ModelState.AddModelError("","Registration already exists.");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var statusDetails =_statusDetailsRepository.Add(detailsCreate);
+            _statusDetailsRepository.Save();
+
+            return Ok("Successfully created");
         }
     }
 }

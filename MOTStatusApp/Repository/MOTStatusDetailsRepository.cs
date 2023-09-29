@@ -11,6 +11,13 @@ namespace MOTStatusWebApi.Repository
             _context = context;
         }
 
+        public MOTStatusDetails Add(MOTStatusDetails details)
+        {
+            _context.MOTStatus.Add(details);
+            _context.SaveChanges();
+            return details;
+        }
+
         public MOTStatusDetails GetRegistrationNumber(string registrationNumber)
         {
             return _context.MOTStatus.Where(mots => mots.RegistrationNumber == registrationNumber).FirstOrDefault();
@@ -24,6 +31,12 @@ namespace MOTStatusWebApi.Repository
         public ICollection<MOTStatusDetails> GetStatusDetails()
         {
             return _context.MOTStatus.OrderBy(mots => mots.Id).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
 
         public bool StatusDetailExists(int Id)
