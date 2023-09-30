@@ -11,7 +11,10 @@ namespace MOTStatusWebApi.Interfaces
         bool StatusDetailExists(int Id);
         bool StatusDetailExists(string registrationNumber);
 
-        MOTStatusDetails Add(MOTStatusDetails details);
+        bool Add(MOTStatusDetails details);
         bool Save();
+
+        bool Update(MOTStatusDetails details);
+        bool Delete(MOTStatusDetails details);
     }
 }

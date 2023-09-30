@@ -1,4 +1,5 @@
-﻿using MOTStatusWebApi.Data;
+﻿
+using MOTStatusWebApi.Data;
 using MOTStatusWebApi.Interfaces;
 
 namespace MOTStatusWebApi.Repository
@@ -11,11 +12,16 @@ namespace MOTStatusWebApi.Repository
             _context = context;
         }
 
-        public MOTStatusDetails Add(MOTStatusDetails details)
+        public bool Add(MOTStatusDetails details)
         {
-            _context.MOTStatus.Add(details);
-            _context.SaveChanges();
-            return details;
+            _context.MOTStatus.Add(details);           
+            return Save();
+        }
+
+        public bool Delete(MOTStatusDetails details)
+        {
+            _context.MOTStatus.Remove(details);
+            return Save();
         }
 
         public MOTStatusDetails GetRegistrationNumber(string registrationNumber)
@@ -47,6 +53,12 @@ namespace MOTStatusWebApi.Repository
         public bool StatusDetailExists(string registrationNumber)
         {
             return _context.MOTStatus.Any(mots => mots.RegistrationNumber.Equals(registrationNumber));
+        }
+
+        public bool Update(MOTStatusDetails details)
+        {
+            _context.MOTStatus.Update(details);                
+            return Save();
         }
     }
 }

@@ -84,5 +84,46 @@ namespace MOTStatusWebApi.Controllers
 
             return Ok("Successfully created");
         }
+        [HttpPut("customerId")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateMOTStatusDetail(int customerId, MOTStatusDetails detailsUpdate)
+        {
+            if (detailsUpdate == null)
+                return BadRequest(ModelState);
+
+            if(customerId != detailsUpdate.Id)
+                return BadRequest(ModelState);
+
+            if (!_statusDetailsRepository.StatusDetailExists(customerId))
+                return NotFound();
+
+            if(!ModelState.IsValid)
+                return BadRequest();         
+
+            _statusDetailsRepository.Update(detailsUpdate);   
+
+            return NoContent();
+        }
+
+        [HttpDelete("delete")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteMOTStatusDetail(int customerId)
+        {
+            if (!_statusDetailsRepository.StatusDetailExists(customerId))
+                return NotFound();
+
+            var statusDetailToDelete = _statusDetailsRepository.GetStatusDetail(customerId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _statusDetailsRepository.Delete(statusDetailToDelete);
+
+            return NoContent();
+        }
     }
 }
