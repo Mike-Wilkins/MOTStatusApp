@@ -1,0 +1,40 @@
+﻿ 
+@model MOTStatusWebApi.Data.MOTStatusDetails
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="container p-3 mt-4 bg-body-secondary">
+    <div class="row pt-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h1><strong>Enter the registration of the</strong></h1>
+            <h1><strong>vehicle</strong></h1><br />
+            <h3><strong>Registration number (number plate)</strong></h3>
+            <p style="font-size:20px">For example, CU57ABC or ABC1234</p>
+
+
+            <form method="post">
+                <div class="mb-3">
+                    <input type="text" name="registration" onclick="inputBorder(this)" style="border:2px solid black; height:40px; width:250px" />
+                </div>
+                <br />
+               <button type="submit" style="background-color: green; color:white; height: 40px; width: 120px; font-size:20px">Continue</button>
+               
+            </form>
+
+
+
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+<script>
+    function inputBorder(target){
+        target.style.outline = "3px solid yellow";
+    }
+</script>
