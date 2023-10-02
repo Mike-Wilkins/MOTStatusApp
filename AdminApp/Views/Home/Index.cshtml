@@ -6,6 +6,20 @@
 }
 
 
+<style>
+
+input:focus {
+ 
+  outline: 3px solid yellow; 
+  border:solid 3px black;
+}
+
+#button:active{
+  outline: 3px solid yellow; 
+}
+
+</style>
+
 <div class="container p-3 mt-4 bg-body-secondary">
     <div class="row pt-4">
         <div class="col-2"></div>
@@ -15,28 +29,15 @@
             <h3><strong>Registration number (number plate)</strong></h3>
             <p style="font-size:20px">For example, CU57ABC or ABC1234</p>
 
-
             <form method="post">
                 <div class="mb-3">
-                    <input type="text" name="registration" onclick="inputBorder(this)" style="border:2px solid black; height:40px; width:250px" />
+                    <input class="regInput" type="text" name="registration" style=" height:40px; width:250px; border-style: solid;" />
                 </div>
                 <br />
-               <button type="submit" style="background-color: green; color:white; height: 40px; width: 120px; font-size:20px">Continue</button>
+               <button id="button" type="submit" style="background-color: green; color:white; height: 40px; width: 120px; font-size:20px">Continue</button>
                
             </form>
-
-
-
-
         </div>
         <div class="col-2"></div>
     </div>
 </div>
-
-<script>
-    function inputBorder(target){
-        target.style.outline = "3px solid yellow";
-        target.style.border = "4px solid black";
-      
-    }
-</script>
