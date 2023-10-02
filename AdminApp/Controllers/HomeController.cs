@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MOTStatusWebApi.Interfaces;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AdminApp.Controllers
 {
@@ -19,14 +20,49 @@ namespace AdminApp.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.RegistrationValidationError = false;
+            ViewBag.RegistrationFormatError = false;
             return View();
         }
 
         [HttpPost]
         public IActionResult Index(string registration)
         {
-            var details = _statusDetailsRepository.GetStatusDetails().Where(d => d.RegistrationNumber == registration).FirstOrDefault();
+           if(registration == null)
+            {
+               ViewBag.RegistrationValidationError = true;
+               ViewBag.RegistrationFormatError = false;
+                return View();
+            }
+
+            var details = _statusDetailsRepository.GetStatusDetails().
+                Where(d => d.RegistrationNumber == registration.ToUpper()).FirstOrDefault();
+
+            var regexValidation = VehicleRegEx(registration);          
+            
+            if(!regexValidation)
+            {
+                ViewBag.RegistrationValidationError = false;
+                ViewBag.RegistrationFormatError = true;
+                return View();
+            }
+
+            return RedirectToAction("Menu", new {registration = registration});
+        }
+
+        public IActionResult Menu(string registration)
+        {
+            var details = _statusDetailsRepository.GetStatusDetails().Where(d => d.RegistrationNumber == registration.ToUpper()).FirstOrDefault();
+
             return View();
+        }
+
+        public static bool VehicleRegEx(string registration)
+        {
+            var regexPattern = @"/^([A-Z]{3}\s?(\d{3}|\d{2}|d{1})\s?[A-Z])|([A-Z]\s?(\d{3}|\d{2}|\d{1})\s?[A-Z]{3})|(([A-HK-PRSVWY][A-HJ-PR-Y])\s?([0][2-9]|[1-9][0-9])\s?[A-HJ-PR-Z]{3})$/";
+            var regExIsValid = Regex.IsMatch(registration, regexPattern);
+
+            return regExIsValid;
         }
 
         public IActionResult Privacy()
