@@ -17,7 +17,6 @@ namespace AdminApp.Controllers
             _logger = logger;
             _statusDetailsRepository = statusDetailsRepository;
         }
-
         public IActionResult Index()
         {
             ViewBag.RegistrationValidationError = false;
@@ -52,9 +51,18 @@ namespace AdminApp.Controllers
 
         public IActionResult Menu(string registration)
         {
-            var details = _statusDetailsRepository.GetStatusDetails().Where(d => d.RegistrationNumber == registration.ToUpper()).FirstOrDefault();
+            var details = _statusDetailsRepository.GetStatusDetails().
+                Where(d => d.RegistrationNumber == registration.ToUpper()).FirstOrDefault();
 
-            return View();
+            string formatReg = FormatReg(details.RegistrationNumber);
+            ViewBag.FormatReg = formatReg;
+
+            return View(details);
+        }
+        public static string FormatReg(string registration)
+        {
+            var result = registration.Insert(4, " ");
+            return result;
         }
 
         public static bool VehicleRegEx(string registration)
@@ -75,5 +83,6 @@ namespace AdminApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

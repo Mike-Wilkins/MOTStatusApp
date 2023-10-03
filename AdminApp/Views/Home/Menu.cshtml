@@ -1,5 +1,133 @@
 ﻿@model MOTStatusWebApi.Data.MOTStatusDetails
 
-<h3>This is the Menu page</h3>
+<style>
+    table{
+        width:100%;
+        border-collapse: collapse;
+    }
+    .attribute {
+        font-weight:bold;
+        padding-top:7px;
+        padding-bottom:7px;
+    }
 
-<h4>@ViewBag.Registration</h4>
+    td{
+        font-size: 20px;
+    }
+    tr{
+        border-bottom: 1pt solid black;
+        
+    }
+    #regPlate{
+        text-align:center; 
+        border-style: solid; 
+        width:140px; 
+        padding-top: 7px; 
+        background:yellow; 
+        border-radius:8px; 
+        margin:0 auto;
+    }
+</style>
+
+<div id="regPlate">
+    <h4>@ViewBag.FormatReg</h4>   
+</div>
+
+<div class="container p-3 mt-2 bg-body-secondary">
+     <div class="row">
+         <div class="col-2"></div>
+         <div class="col-4" style="text-align:center">        
+                @Html.ActionLink("Update","Update","Home", new {Id = @Model.Id}, new{@class="btn btn-success", @style="width:300px"})      
+         </div>
+         <div class="col-4" style="text-align:center">
+             @Html.ActionLink("Delete","Delete","Home", new {Id = @Model.Id}, new{@class="btn btn-danger", @style="width:300px"})  
+         </div>
+     </div>
+</div>
+
+<div class="container p-3 mt-0 bg-body-secondary">
+    <div class="row pt-1">
+        <h4>Vehicle Details</h4>
+        <div class="col-6">
+            <table>
+                <tr>
+                    <td class="attribute">Vehicle make</td>
+                    <td>@Model.Make</td>
+                </tr>
+                <tr>
+                    <td class="attribute">Date of first registration</td>
+                    <td>@Model.DateOfRegistration</td>
+                </tr>
+                <tr>
+                    <td class="attribute">Cylinder Capacity</td>
+                    <td>@Model.CylinderCapacity</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">CO2 Emissions</td>
+                    <td>@Model.CO2Emissions</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Fuel Type</td>
+                    <td>@Model.FuelType</td>
+                </tr> <tr>
+                    <td class="attribute">Euro status</td>
+                    <td>@Model.EuroStatus</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Real driving emissions (RDE)</td>
+                    <td>@Model.RealDrivingEmissions</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Export marker</td>
+                    <td>@Model.ExportMarker</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Vehicle Status</td>
+                    <td>@Model.VehicleStatus</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-6">
+            <table>
+                 <tr>
+                    <td class="attribute">Vehicle Colour</td>
+                    <td>@Model.VehicleColour</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Vehicle type approval</td>
+                    <td>@Model.VehicleTypeApproval</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Wheel plan</td>
+                    <td>@Model.WheelPlan</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Revenue weight</td>
+                    <td>@Model.RevenueWeight</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Date of last V5C</td>
+                    <td>@Model.DateOfLastV5C</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Taxed</td>
+                    <td>@Model.Taxed</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Tax due date</td>
+                    <td>@Model.TaxDueDate</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">MOTed</td>
+                    <td>@Model.MOTDueDate</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">MOT due date</td>
+                    <td>@Model.MOTDueDate</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+

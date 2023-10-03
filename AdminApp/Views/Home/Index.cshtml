@@ -7,7 +7,6 @@
 
 
 <style>
-
 .regInput{
     height:40px; 
     width:250px; 
@@ -27,10 +26,17 @@ input:focus {
   border:solid 3px black;
 }
 
-#button:active{
-  outline: 3px solid yellow; 
+.button{
+    background-color: green; 
+    color:white; 
+    height: 40px; 
+    width: 120px; 
+    font-size:20px;
 }
 
+#buttonactive:active{
+  outline: 3px solid yellow; 
+}
 </style>
 
 <div class="container p-3 mt-4 bg-body-secondary">
@@ -72,7 +78,7 @@ input:focus {
                 }
 
                 <br />
-               <button id="button" type="submit" style="background-color: green; color:white; height: 40px; width: 120px; font-size:20px">Continue</button>
+               <button class="button" id="buttonactive" type="submit">Continue</button>
                
             </form>
         </div>

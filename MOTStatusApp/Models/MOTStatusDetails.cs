@@ -1,4 +1,6 @@
-﻿namespace MOTStatusWebApi.Data
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MOTStatusWebApi.Data
 {
     public class MOTStatusDetails
     {
