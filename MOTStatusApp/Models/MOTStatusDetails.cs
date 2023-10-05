@@ -58,5 +58,8 @@ namespace MOTStatusWebApi.Data
         [Display(Name = "MOT Due Date")]
         public string MOTDueDate { get; set; }
 
+        [Display(Name ="Date of last MOT")]
+        public string? DateOfLastMOT { get; set; }
+
     }
 }
