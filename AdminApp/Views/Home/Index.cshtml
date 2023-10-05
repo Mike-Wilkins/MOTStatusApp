@@ -75,6 +75,16 @@ input:focus {
                         <input class="errorRegInput" type="text" name="registration" maxlength="7" />
                       </div>
                     </div>
+                }else if(ViewBag.RegistrationNotFoundError = true)
+                {
+                    <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
+                       <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
+                       <p style="font-size:20px; margin-left:10px">For example, CU57ABC or ABC1234</p>
+                       <h4 style="color:red; margin-left:10px"><strong>Vehicle registration was not found</strong></h4>  
+                      <div class="mb-3">
+                        <input class="errorRegInput" type="text" name="registration" maxlength="7" />
+                      </div>
+                    </div>
                 }
 
                 <br />

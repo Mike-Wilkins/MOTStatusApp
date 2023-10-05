@@ -22,6 +22,7 @@ namespace AdminApp.Controllers
         {
             ViewBag.RegistrationValidationError = false;
             ViewBag.RegistrationFormatError = false;
+            ViewBag.RegistrationNotFoundError = false;
             return View();
         }
 
@@ -35,15 +36,21 @@ namespace AdminApp.Controllers
                 return View();
             }
 
-            var details = _statusDetailsRepository.GetStatusDetails().
-                Where(d => d.RegistrationNumber == registration.ToUpper()).FirstOrDefault();
-
             var regexValidation = VehicleRegEx(registration);          
             
             if(!regexValidation)
             {
                 ViewBag.RegistrationValidationError = false;
                 ViewBag.RegistrationFormatError = true;
+                return View();
+            }
+
+            var details = _statusDetailsRepository.GetStatusDetails().
+                Where(d => d.RegistrationNumber == registration.ToUpper()).FirstOrDefault();
+
+            if (details == null)
+            {
+                ViewBag.RegistrationNotFoundError = true;
                 return View();
             }
 
