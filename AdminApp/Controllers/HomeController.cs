@@ -1,5 +1,6 @@
 ﻿using AdminApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using MOTStatusWebApi.Data;
 using MOTStatusWebApi.Interfaces;
 using System.Diagnostics;
 using System.Linq;
@@ -71,6 +72,24 @@ namespace AdminApp.Controllers
             var regExIsValid = Regex.IsMatch(registration, regexPattern);
 
             return regExIsValid;
+        }
+
+        public IActionResult Update(int Id)
+        {
+            var details = _statusDetailsRepository.GetStatusDetails().
+               Where(d => d.Id == Id).FirstOrDefault();
+
+            return View(details);
+        }
+
+        [HttpPost]
+        public IActionResult Update(MOTStatusDetails details)
+        {
+
+
+
+
+            return View();
         }
 
         public IActionResult Privacy()

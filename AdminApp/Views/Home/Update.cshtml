@@ -1,0 +1,106 @@
+﻿@model MOTStatusWebApi.Data.MOTStatusDetails
+
+<style>
+    .attribute{
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .form-control{
+        border:1px solid Black;
+    }
+</style>
+
+
+<form asp-action="Update">
+    <div class="border p-3 mt-4 bg-body-secondary">
+        <div class="container">
+            <div class="row pb-2">
+                <div class="col-6">
+                    <h4>Update Vehicle Details</h4>
+                </div>
+                <div class="col-6" style="text-align:right">
+                    <button type="submit" class="btn btn-primary" style="width:150px;">Update</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container p-3">
+            <div class="row pt-0">
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label asp-for="RegistrationNumber" class="attribute"></label>
+                        <input asp-for="RegistrationNumber" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Make" class="attribute"></label>
+                        <input asp-for="Make" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DateOfRegistration" class="attribute"></label>
+                        <input asp-for="DateOfRegistration" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CylinderCapacity" class="attribute"></label>
+                        <input asp-for="CylinderCapacity" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CO2Emissions" class="attribute"></label>
+                        <input asp-for="CO2Emissions" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="FuelType" class="attribute"></label>
+                        <input asp-for="FuelType" class="form-control"/>
+                    </div>                  
+                </div>
+
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label asp-for="EuroStatus" class="attribute"></label>
+                        <input asp-for="EuroStatus" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RealDrivingEmissions" class="attribute"></label>
+                        <input asp-for="RealDrivingEmissions" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ExportMarker" class="attribute"></label>
+                        <input asp-for="ExportMarker" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="VehicleColour" class="attribute"></label>
+                        <input asp-for="VehicleColour" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="VehicleTypeApproval" class="attribute"></label>
+                        <input asp-for="VehicleTypeApproval" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="WheelPlan" class="attribute"></label>
+                        <input asp-for="WheelPlan" class="form-control"/>
+                    </div>
+                </div>
+                 <div class="col-4">
+                    <div class="mb-3">
+                        <label asp-for="RevenueWeight" class="attribute"></label>
+                        <input asp-for="RevenueWeight" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DateOfLastV5C" class="attribute"></label>
+                        <input asp-for="DateOfLastV5C" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="TaxDueDate" class="attribute"></label>
+                        <input asp-for="TaxDueDate" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="MOTDueDate" class="attribute"></label>
+                        <input asp-for="MOTDueDate" class="form-control"/>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>
