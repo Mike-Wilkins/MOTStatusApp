@@ -93,6 +93,14 @@ namespace AdminApp.Controllers
         public IActionResult Update(MOTStatusDetails details)
         {
 
+            ModelState.Remove(nameof(details.TaxDueDate));
+            ModelState.Remove(nameof(details.MOTDueDate));
+
+            if (!ModelState.IsValid)
+            {
+                return View(details);
+            }
+
             details.TaxDueDate = UpdateVehicleDueDate(details.DateOfLastV5C);
             details.MOTDueDate = UpdateVehicleDueDate(details.DateOfLastMOT);
 
@@ -133,10 +141,44 @@ namespace AdminApp.Controllers
         }
 
 
-        public IActionResult Privacy()
+        public IActionResult Create()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Create(MOTStatusDetails details)
+        {
+
+            ModelState.Remove(nameof(details.TaxDueDate));
+            ModelState.Remove(nameof(details.MOTDueDate));
+
+            if (!ModelState.IsValid)
+            {
+                return View(details);
+            }
+
+            details.TaxDueDate = UpdateVehicleDueDate(details.DateOfLastV5C);
+            details.MOTDueDate = UpdateVehicleDueDate(details.DateOfLastMOT);
+
+            details.Taxed = IsVehicleTaxedAndMOTed(details.TaxDueDate);
+            details.MOTed = IsVehicleTaxedAndMOTed(details.MOTDueDate);
+
+            if (details.Taxed)
+            {
+                details.VehicleStatus = "Taxed";
+            }
+            else { details.VehicleStatus = "Not Taxed"; }
+
+            _statusDetailsRepository.Add(details);
+
+
+            return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
+        }
+
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
