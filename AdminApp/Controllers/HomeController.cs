@@ -84,16 +84,9 @@ namespace AdminApp.Controllers
         public IActionResult Update(int Id)
         {
             var details = _statusDetailsRepository.GetStatusDetails().
-               Where(d => d.Id == Id).FirstOrDefault();
+               Where(d => d.Id == Id).FirstOrDefault();      
 
-            DateTime dateMOT = DateTime.Parse(details.DateOfLastMOT);
-            details.DateOfLastMOT = dateMOT.ToString("yyyy-MM-dd");
-
-            DateTime dateTax = DateTime.Parse(details.DateOfLastV5C);
-            details.DateOfLastV5C = dateTax.ToString("yyyy-MM-dd");
-
-            DateTime dateReg = DateTime.Parse(details.DateOfRegistration);
-            details.DateOfRegistration = dateReg.ToString("yyyy-MM-dd");
+            details = FormatDatePicker(details);
 
             return View(details);
         }
@@ -110,6 +103,40 @@ namespace AdminApp.Controllers
                 return View(details);
             }
 
+            details = FormatObjectDetails(details);
+
+            _statusDetailsRepository.Update(details);
+
+            return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
+        }
+
+        public IActionResult Create()
+        {
+            ViewBag.RegistrationFormatError = false;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(MOTStatusDetails details)
+        {
+            ModelState.Remove(nameof(details.TaxDueDate));
+            ModelState.Remove(nameof(details.MOTDueDate));
+
+            if (!ModelState.IsValid)
+            {
+                return View(details);
+            }
+
+            details = FormatObjectDetails(details);
+
+            _statusDetailsRepository.Add(details);
+
+            return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
+        }
+
+
+        public static MOTStatusDetails FormatObjectDetails(MOTStatusDetails details)
+        {
             details.DateOfRegistration = FormatDate(details.DateOfRegistration);
             details.DateOfLastV5C = FormatDate(details.DateOfLastV5C);
             details.DateOfLastMOT = FormatDate(details.DateOfLastMOT);
@@ -126,9 +153,15 @@ namespace AdminApp.Controllers
             }
             else { details.VehicleStatus = "Not Taxed"; }
 
-            _statusDetailsRepository.Update(details);
+            return (details);
+        }
 
-            return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
+        public static string FormatDate(string detailsDate)
+        {
+            DateTime date = DateTime.Parse(detailsDate);
+            var result = date.ToString("dd/MM/yyyy");
+
+            return (result);
         }
 
         public static string UpdateVehicleDueDate(string date)
@@ -153,54 +186,23 @@ namespace AdminApp.Controllers
             return (true);
         }
 
-
-        public IActionResult Create()
+        public static MOTStatusDetails FormatDatePicker(MOTStatusDetails details)
         {
-            ViewBag.RegistrationFormatError = false;
-            return View();
-        }
+            string[] detailDates = { details.DateOfRegistration, details.DateOfLastV5C, details.DateOfLastMOT };
 
-        [HttpPost]
-        public IActionResult Create(MOTStatusDetails details)
-        {
-            ModelState.Remove(nameof(details.TaxDueDate));
-            ModelState.Remove(nameof(details.MOTDueDate));
-
-            if (!ModelState.IsValid)
+            for (int i = 0; i < detailDates.Length; i++)
             {
-                return View(details);
+                detailDates[i] = DateTime.Parse(detailDates[i]).ToString("yyyy-MM-dd");
             }
 
-            details.DateOfRegistration = FormatDate(details.DateOfRegistration);
-            details.DateOfLastV5C = FormatDate(details.DateOfLastV5C);
-            details.DateOfLastMOT = FormatDate(details.DateOfLastMOT);
+            details.DateOfRegistration = detailDates[0];
+            details.DateOfLastV5C = detailDates[1];
+            details.DateOfLastMOT = detailDates[2];
 
-            details.TaxDueDate = UpdateVehicleDueDate(details.DateOfLastV5C);
-            details.MOTDueDate = UpdateVehicleDueDate(details.DateOfLastMOT);
-
-            details.Taxed = IsVehicleTaxedAndMOTed(details.TaxDueDate);
-            details.MOTed = IsVehicleTaxedAndMOTed(details.MOTDueDate);
-
-            if (details.Taxed)
-            {
-                details.VehicleStatus = "Taxed";
-            }
-            else { details.VehicleStatus = "Not Taxed"; }
-
-            _statusDetailsRepository.Add(details);
-
-
-            return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
+            return (details);
         }
 
 
-        public static string FormatDate(string detailsDate)
-        {
-            DateTime date = DateTime.Parse(detailsDate);
-            var result = date.ToString("dd/MM/yyyy");
-
-            return (result);
-        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
