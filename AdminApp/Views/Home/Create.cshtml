@@ -6,10 +6,16 @@
         font-weight: bold;
         margin-bottom: 5px;
     }
-    .form-control{
+    .form-control, .form-select{
+        border:1px solid Black;
+    }
+    .datePicker{
+        width:385px;
+        height: 35px;
         border:1px solid Black;
     }
 </style>
+
 
 <form method="post">
      <div class="border p-3 mt-4 bg-body-secondary">
@@ -38,8 +44,8 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="DateOfRegistration" class="attribute"></label>
-                            <input asp-for="DateOfRegistration" class="form-control"/>
-                            <span asp-validation-for="DateOfRegistration" class="text-danger"></span>
+                            <input asp-for="DateOfRegistration" class="form-control" placeholder="DD/MM/YYYY" type="date"/>
+                            <span asp-validation-for="DateOfRegistration" class="text-danger"></span>      
                         </div>
                         <div class="mb-3">
                             <label asp-for="CylinderCapacity" class="attribute"></label>
@@ -51,10 +57,14 @@
                             <input asp-for="CO2Emissions" class="form-control"/>
                             <span asp-validation-for="CO2Emissions" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
+                        <div class="form-group mb-3">
                             <label asp-for="FuelType" class="attribute"></label>
-                            <input asp-for="FuelType" class="form-control"/>
-                            <span asp-validation-for="FuelType" class="text-danger"></span>
+                                <select asp-for="FuelType" class="form-select">
+                                    <option value="PETROL">PETROL</option>
+                                    <option value="DEISEL">DEISEL</option>
+                                    <option value="ELECTRIC">ELECTRIC</option>
+                                    <option value="HYBRID">HYBRID</option>
+                                </select>
                         </div>                  
                     </div>
                     <div class="col-4">
@@ -68,10 +78,12 @@
                             <input asp-for="RealDrivingEmissions" class="form-control"/>
                             <span asp-validation-for="RealDrivingEmissions" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
+                        <div class="form-group mb-3">
                             <label asp-for="ExportMarker" class="attribute"></label>
-                            <input asp-for="ExportMarker" class="form-control"/>
-                            <span asp-validation-for="ExportMarker" class="text-danger"></span>
+                                <select asp-for="ExportMarker" class="form-select">
+                                    <option value="YES">YES</option>
+                                    <option value="NO">NO</option>
+                                </select>
                         </div>
                         <div class="mb-3">
                             <label asp-for="VehicleColour" class="attribute"></label>
@@ -83,10 +95,12 @@
                             <input asp-for="VehicleTypeApproval" class="form-control"/>
                             <span asp-validation-for="VehicleTypeApproval" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
+                        <div class="form-group mb-3">
                             <label asp-for="WheelPlan" class="attribute"></label>
-                            <input asp-for="WheelPlan" class="form-control"/>
-                            <span asp-validation-for="WheelPlan" class="text-danger"></span>
+                                <select asp-for="WheelPlan" class="form-select">
+                                    <option value="2 AXLE RIGID BODY">2 AXLE RIGID BODY</option>
+                                    <option value="4X4">4X4 </option>
+                                </select>
                         </div>
                     </div>
                     <div class="col-4">
@@ -97,7 +111,7 @@
                         </div>
                          <div class="mb-3">
                             <label asp-for="DateOfLastV5C" class="attribute"></label>
-                            <input asp-for="DateOfLastV5C" class="form-control" placeholder="DD/MM/YYYY"/>
+                            <input asp-for="DateOfLastV5C" class="form-control" placeholder="DD/MM/YYYY" type="date"/>
                              <span asp-validation-for="DateOfLastV5C" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
@@ -106,7 +120,7 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="DateOfLastMOT" class="attribute"></label>
-                            <input asp-for="DateOfLastMOT" class="form-control" placeholder="DD/MM/YYYY"/>
+                            <input asp-for="DateOfLastMOT" class="form-control" placeholder="DD/MM/YYYY" type="date"/>
                             <span asp-validation-for="DateOfLastMOT" class="text-danger"></span>
                         </div>
                         <div class="mb-3">

@@ -86,6 +86,15 @@ namespace AdminApp.Controllers
             var details = _statusDetailsRepository.GetStatusDetails().
                Where(d => d.Id == Id).FirstOrDefault();
 
+            DateTime dateMOT = DateTime.Parse(details.DateOfLastMOT);
+            details.DateOfLastMOT = dateMOT.ToString("yyyy-MM-dd");
+
+            DateTime dateTax = DateTime.Parse(details.DateOfLastV5C);
+            details.DateOfLastV5C = dateTax.ToString("yyyy-MM-dd");
+
+            DateTime dateReg = DateTime.Parse(details.DateOfRegistration);
+            details.DateOfRegistration = dateReg.ToString("yyyy-MM-dd");
+
             return View(details);
         }
 
@@ -100,6 +109,10 @@ namespace AdminApp.Controllers
             {
                 return View(details);
             }
+
+            details.DateOfRegistration = FormatDate(details.DateOfRegistration);
+            details.DateOfLastV5C = FormatDate(details.DateOfLastV5C);
+            details.DateOfLastMOT = FormatDate(details.DateOfLastMOT);
 
             details.TaxDueDate = UpdateVehicleDueDate(details.DateOfLastV5C);
             details.MOTDueDate = UpdateVehicleDueDate(details.DateOfLastMOT);
@@ -143,13 +156,13 @@ namespace AdminApp.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.RegistrationFormatError = false;
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(MOTStatusDetails details)
         {
-
             ModelState.Remove(nameof(details.TaxDueDate));
             ModelState.Remove(nameof(details.MOTDueDate));
 
@@ -157,6 +170,10 @@ namespace AdminApp.Controllers
             {
                 return View(details);
             }
+
+            details.DateOfRegistration = FormatDate(details.DateOfRegistration);
+            details.DateOfLastV5C = FormatDate(details.DateOfLastV5C);
+            details.DateOfLastMOT = FormatDate(details.DateOfLastMOT);
 
             details.TaxDueDate = UpdateVehicleDueDate(details.DateOfLastV5C);
             details.MOTDueDate = UpdateVehicleDueDate(details.DateOfLastMOT);
@@ -177,7 +194,13 @@ namespace AdminApp.Controllers
         }
 
 
+        public static string FormatDate(string detailsDate)
+        {
+            DateTime date = DateTime.Parse(detailsDate);
+            var result = date.ToString("dd/MM/yyyy");
 
+            return (result);
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -8,6 +8,8 @@ namespace MOTStatusWebApi.Data
 
         [Display(Name ="Registration Number")]
         [Required(ErrorMessage = "Registration number is required")]
+        [RegularExpression("^[A-Z]{2}[0-9]{2}[A-Z]{3}$", 
+            ErrorMessage = "Special characters are not allowed")]
         public string? RegistrationNumber { get; set; }
         [Required(ErrorMessage = "Make is required")]
         public string? Make { get; set; }
