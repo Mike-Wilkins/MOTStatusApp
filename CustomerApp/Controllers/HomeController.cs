@@ -59,9 +59,45 @@ namespace CustomerApp.Controllers
 
         public IActionResult DetailConfirmation(MOTStatusDetails carDetails)
         {
+            string formatReg = FormatReg(carDetails.RegistrationNumber);
+            carDetails.RegistrationNumber = formatReg;
+            ViewBag.ConfirmNotSelectedError = false;
             return View(carDetails);
         }
 
+        [HttpPost]
+        public IActionResult DetailConfirmation(string confirm, MOTStatusDetails detail)
+        {
+            if(confirm == null)
+            {
+                ViewBag.ConfirmNotSelectedError = true;
+                return View(detail);
+            }
+
+            if(confirm == "Yes")
+            {
+                return RedirectToAction("VehicleDetail", detail);
+            }else if(confirm == "No"){
+                return RedirectToAction("Index");
+            }
+
+            return View(confirm);
+        }
+
+        public IActionResult VehicleDetail(MOTStatusDetails detail)
+        {
+            string formatReg = FormatReg(detail.RegistrationNumber);
+            detail.RegistrationNumber = formatReg;
+
+            return View(detail);
+        }
+
+
+        public static string FormatReg(string registration)
+        {
+            var result = registration.Insert(4, " ");
+            return result;
+        }
 
 
         private bool VehicleRegEx(string registration)

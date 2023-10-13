@@ -1,5 +1,128 @@
 ﻿@model MOTStatusWebApi.Data.MOTStatusDetails
 
-<h4>Detail Confirmation here !!!!</h4>
+<style>
+     #regPlate{
+       background:#ffd633; 
+       width:140px; 
+       text-align:center; 
+       border-radius:8px;
+       height:40px;
+       padding-top: 5px;
+       margin-bottom:7px;     
+    }
+     table{
+        width:70%;
+        border-collapse: collapse;
+    }
+    .attribute {
+        font-weight:bold;
+        padding-top:7px;
+        padding-bottom:7px;      
+    }
 
-<h4>@Model.RegistrationNumber</h4>
+    td{
+        font-size: 20px;
+    }
+    label{
+        float:left;
+        margin:5px;
+        font-size: 20px;
+        padding-left:7px;   
+    }
+    tr{
+        border-bottom: 1pt solid black;         
+    }
+    input {
+        float:left;
+        margin:5px;
+        width:35px;
+        height:35px;
+        vertical-align: middle;
+       
+       
+    }
+    .button{
+        background-color: green; 
+        color:white; 
+        height: 40px; 
+        width: 120px; 
+        font-size:20px;
+    }
+
+    #buttonactive:active{
+      outline: 3px solid yellow; 
+    }
+</style>
+
+<div class="container p-3 mt-4 bg-body-secondary">
+    <div class="row pt-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h2><strong>Is this the vehicle you are looking for?</strong></h2><br />
+            <table>
+                <tr>
+                   <td class="attribute">Registration number</td>
+                   <td>
+                       <div id="regPlate">
+                            <h4>@Model.RegistrationNumber</h4>   
+                       </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="attribute">Make</td>
+                    <td>@Model.Make</td>
+                </tr>
+                <tr>
+                    <td class="attribute">Colour</td>
+                    <td>@Model.VehicleColour</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+<form method="post">
+
+    @if(ViewBag.ConfirmNotSelectedError == false)
+    {
+     <div class="container p-3 mt-0 bg-body-secondary">
+         <div class="row pt-0">
+               <div class="col-2"></div>
+               <div class="col-6">
+                  <input type="radio" id="Yes" name="confirm" value="Yes"/>
+                  <label for="Yes" style="margin-right:60px;">Yes</label>
+                  <input type="radio" id="No" name="confirm" value="No"/>
+                  <label for="No">No, search again</label>
+               </div>
+               <div class="col-4"></div>       
+         </div>        
+    </div>
+    }else if(ViewBag.ConfirmNotSelectedError == true)
+    {
+        <div class="container p-3 mt-0 bg-body-secondary">
+         <div class="row pt-0">
+               <div class="col-2"></div>
+               <div class="col-6" style="border-left-style: solid; border-left-color: red; border-width: 5px">
+                   <h5 style="color:red; margin-left:10px"><strong>Select yes if this is the correct vehicle or no to search again</strong></h5>
+                  <input type="radio" id="Yes" name="confirm" value="Yes"/>
+                  <label for="Yes" style="margin-right:60px;" >Yes</label>
+                  <input type="radio" id="No" name="confirm" value="No"/>
+                  <label for="No">No, search again</label>
+               </div>
+               <div class="col-4"></div>       
+         </div>        
+        </div>
+    }
+
+    <div class="container p-3 mt-0 bg-body-secondary" >
+        <div class="row pt-0">
+            <div class="col-2"></div>
+            <div class="col-2">
+                <button class="button" id="buttonactive" type="submit" onclick="location.href='@Url.Action("DetailConfirmation", "Home",Model)'">Continue</button>    
+            </div>
+        </div>
+    </div>  
+</form>
+
+
