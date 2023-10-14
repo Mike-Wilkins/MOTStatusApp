@@ -70,6 +70,8 @@ namespace CustomerApp.Controllers
         {
             if(confirm == null)
             {
+                string formatReg = FormatReg(detail.RegistrationNumber);
+                detail.RegistrationNumber = formatReg;
                 ViewBag.ConfirmNotSelectedError = true;
                 return View(detail);
             }
@@ -89,11 +91,21 @@ namespace CustomerApp.Controllers
             string formatReg = FormatReg(detail.RegistrationNumber);
             detail.RegistrationNumber = formatReg;
 
+            detail.TaxDueDate = FormatDate(detail.TaxDueDate);
+            detail.MOTDueDate = FormatDate(detail.MOTDueDate);
+
             return View(detail);
         }
 
+        private string FormatDate(string detailsDate)
+        {
+            DateTime date = DateTime.Parse(detailsDate);
+            var result = date.ToString("d/MMMM/yyyy").Replace("/"," ");
 
-        public static string FormatReg(string registration)
+            return (result);
+        }
+
+        private string FormatReg(string registration)
         {
             var result = registration.Insert(4, " ");
             return result;

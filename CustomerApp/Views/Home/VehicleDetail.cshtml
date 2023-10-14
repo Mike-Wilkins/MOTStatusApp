@@ -1,5 +1,9 @@
 ﻿@model MOTStatusWebApi.Data.MOTStatusDetails
 
+@{
+Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
+}
+
 <style>
      #regPlate{
        background:#ffd633; 
@@ -11,8 +15,168 @@
        margin-bottom:7px; 
        margin:0 auto;
     }
+    #greenCard{
+        background-color:green;
+        color:white;
+        width:407px;
+        margin:10px;
+        text-align:center;
+    }
+    #redCard{
+        background-color:red;
+        color:white;
+        width:407px;
+        margin:10px;
+        text-align:center;
+    }
+    #IncorrectTaxStatus{
+        background: none!important;
+        border: none;
+        padding: 0!important;
+        /*optional*/
+        font-family: arial, sans-serif;
+        /*input has OS specific font-family*/
+        color: #0059b3;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    #taxStatusInfo{
+        
+        border-left-style: solid; 
+        border-left-color: #b3b3b3; 
+        border-width: 4px;
+    }
+    #IncorrectMOTStatus{
+        background: none!important;
+        border: none;
+        padding: 0!important;
+        /*optional*/
+        font-family: arial, sans-serif;
+        /*input has OS specific font-family*/
+        color: #0059b3;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    #MOTStatusInfo{
+        
+        border-left-style: solid; 
+        border-left-color: #b3b3b3; 
+        border-width: 4px;
+    }
 </style>
 
 <div style="margin-top:40px;">
     <h4 id="regPlate">@Model.RegistrationNumber</h4>
 </div>
+
+<div class="container p-0 mt-2 bg-body-secondary">
+    <div class="row">
+        <div class="col-2"></div>
+
+        @if(Model.Taxed == true)
+        {          
+            <div class="col-4" id="greenCard">
+                <h2 style="margin-top:15px;"><span style="font-family: Arial Unicode MS, Lucida Grande">&#10004;</span> Taxed</h2>
+                <h5>Tax due:</h5>
+                <h5 style="margin-bottom:25px;">@Model.TaxDueDate</h5>           
+            </div>
+        }else if(Model.Taxed == false)
+        {
+            <div class="col-4" id="redCard">
+                <h2 style="margin-top:15px;"><span style="font-family: Arial Unicode MS, Lucida Grande">&#10008;</span> Not Taxed</h2>
+                <h5>Tax due:</h5>
+                <h5 style="margin-bottom:25px;">@Model.TaxDueDate</h5>
+            </div>
+        }
+
+        @if(Model.MOTed == true)
+        {
+            <div class="col-4" id="greenCard">
+              <h2 style="margin-top:10px;"><span style="font-family: Arial Unicode MS, Lucida Grande">&#10004;</span> MOT</h2>
+              <h5>Expires:</h5>
+              <h5>@Model.MOTDueDate</h5>
+            </div>
+
+        }else if(Model.MOTed == false)
+        {
+             <div class="col-4" id="redCard">
+              <h2 style="margin-top:10px;"><span style="font-family: Arial Unicode MS, Lucida Grande">&#10008;</span> No MOT</h2>
+              <h5>Expires:</h5>
+              <h5>@Model.MOTDueDate</h5>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container p-0 mt-0 bg-body-secondary">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4">
+             
+            <div style="display:inline">
+               <img id="arrowIcon" src="~/images/icons8-right-arrow-64.png" width="23" height="23"/>
+               <button id="IncorrectTaxStatus" onclick="IncorrectTaxStatus()"> Incorrect tax status?</button>
+            </div>
+        
+              <div id="taxStatusInfo" style="display:none;">
+                  <p style="margin-left:10px; margin-top:10px;">
+                      If you've just taxed or made a SORN it can take up to 5 working days
+                      for your status to update. You can check with your bank/building society
+                      to confirm your payment was successful.</p>
+                  <p style="margin-left:10px; margin-top:10px;">
+                      If the tax status is still incorrect after 5 working days <a href="" style="color:#0059b3">contact DVLA</a>
+                  </p>
+              </div>
+        </div>
+        <div class="col-4">
+            <div style="display:inline">
+                <img id="MOTarrowIcon" src="~/images/icons8-right-arrow-64.png" width="23" height="23"/>
+                <button id="IncorrectMOTStatus" onclick="IncorrectMOTStatus()"> Incorrect MOT status?</button>
+            </div>
+            <div id="MOTStatusInfo" style="display:none">
+                <p style="margin-left:10px; margin-top:10px;">
+                    If the MOT status is incorrect it can take up to 5
+                    working days for your status to update.
+                </p>
+                 <p style="margin-left:10px; margin-top:10px;">
+                     If the MOT status is still incorrect after 5 working days <a href="" style="color:#0059b3">contact DVLA</a>
+                </p>
+            </div>
+              
+        </div>
+    </div>
+</div>
+
+<script>
+    function IncorrectTaxStatus() {
+      var x = document.getElementById("taxStatusInfo");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+
+    var arrow = document.getElementById("arrowIcon");
+     if(arrow.src === 'https://localhost:7131/images/icons8-right-arrow-64.png'){
+         arrow.src = 'https://localhost:7131/images/icons8-drop-down-64.png';
+     } else {
+         arrow.src = 'https://localhost:7131/images/icons8-right-arrow-64.png';
+     }
+}
+
+    function IncorrectMOTStatus() {
+      var x = document.getElementById("MOTStatusInfo");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+
+    var arrow = document.getElementById("MOTarrowIcon");
+     if(arrow.src === 'https://localhost:7131/images/icons8-right-arrow-64.png'){
+         arrow.src = 'https://localhost:7131/images/icons8-drop-down-64.png';
+     } else {
+         arrow.src = 'https://localhost:7131/images/icons8-right-arrow-64.png';
+     }
+}
+</script>
