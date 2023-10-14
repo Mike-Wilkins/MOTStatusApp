@@ -63,6 +63,9 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
         border-left-color: #b3b3b3; 
         border-width: 4px;
     }
+    a{
+        color:#0059b3
+    }
 </style>
 
 <div style="margin-top:40px;">
@@ -139,11 +142,24 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
                     working days for your status to update.
                 </p>
                  <p style="margin-left:10px; margin-top:10px;">
-                     If the MOT status is still incorrect after 5 working days <a href="" style="color:#0059b3">contact DVLA</a>
+                     If the MOT status is still incorrect after 5 working days <a href="">contact DVLA</a>
                 </p>
             </div>
               
         </div>
+    </div>
+</div>
+
+<div class="container p-0 mt-4 bg-body-secondary">
+    <div class="row">
+        <div class="col-2"></div>
+            <div class="col-8">
+                <div style="display:inline">
+                    <img src="~/images/exclamation.png" width="30" height="30" />
+                    <span><strong>If you've just bought this vehicle the <a href="">tax</a> or <a href="">SORN</a> doesn't come with it. 
+                        You'll need to <a href="">tax</a> it before driving it.</strong></span>
+                </div>
+            </div>
     </div>
 </div>
 

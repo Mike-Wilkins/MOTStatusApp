@@ -52,6 +52,23 @@
     #buttonactive:active{
       outline: 3px solid yellow; 
     }
+     #IncorrectVehicleDetails{
+        background: none!important;
+        border: none;
+        padding: 0!important;
+        /*optional*/
+        font-family: arial, sans-serif;
+        /*input has OS specific font-family*/
+        color: #0059b3;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    #incorrectVehicleDetailsInfo{
+        
+        border-left-style: solid; 
+        border-left-color: #b3b3b3; 
+        border-width: 4px;
+    }
 </style>
 
 <div class="container p-3 mt-4 bg-body-secondary">
@@ -115,7 +132,7 @@
         </div>
     }
 
-    <div class="container p-3 mt-0 bg-body-secondary" >
+    <div class="container p-0 mt-0 bg-body-secondary" >
         <div class="row pt-0">
             <div class="col-2"></div>
             <div class="col-2">
@@ -125,4 +142,40 @@
     </div>  
 </form>
 
+ <div class="container p-0 mt-4 bg-body-secondary">
+        <div class="row pt-0">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div style="display:inline">
+                   <img id="arrowIcon" src="~/images/icons8-right-arrow-64.png" width="23" height="23"/>
+                   <button id="IncorrectVehicleDetails" onclick="IncorrectVehicleDetails()"> Incorrect vehicle details?</button>
+                </div>
+                <div id="incorrectVehicleDetailsInfo" style="display:none;">
+                  <p style="margin-left:10px; margin-top:10px;">
+                      If your vehicle details are incorrect you may need to <a href="">update them</a>.
+                  </p>
+                 
+                </div>
+           </div>
+      </div>
+</div>
 
+<script>
+    function IncorrectVehicleDetails() {
+
+      var x = document.getElementById("incorrectVehicleDetailsInfo");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+
+    var arrow = document.getElementById("arrowIcon");
+     if(arrow.src === 'https://localhost:7131/images/icons8-right-arrow-64.png'){
+         arrow.src = 'https://localhost:7131/images/icons8-drop-down-64.png';
+     } else {
+         arrow.src = 'https://localhost:7131/images/icons8-right-arrow-64.png';
+     }
+}
+
+</script>
