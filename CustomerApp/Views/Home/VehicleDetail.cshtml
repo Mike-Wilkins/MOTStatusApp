@@ -18,16 +18,33 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
     #greenCard{
         background-color:green;
         color:white;
-        width:407px;
+        width:417px;
         margin:10px;
         text-align:center;
     }
     #redCard{
         background-color:red;
         color:white;
-        width:407px;
+        width:417px;
         margin:10px;
         text-align:center;
+    }
+    #IncorrectVehicleDetails{
+        background: none!important;
+        border: none;
+        padding: 0!important;
+        /*optional*/
+        font-family: arial, sans-serif;
+        /*input has OS specific font-family*/
+        color: #0059b3;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    #incorrectVehicleDetailsInfo{
+        
+        border-left-style: solid; 
+        border-left-color: #b3b3b3; 
+        border-width: 4px;
     }
     #IncorrectTaxStatus{
         background: none!important;
@@ -66,6 +83,37 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
     a{
         color:#0059b3
     }
+    td{
+        font-size: 17px;
+    }
+    tr{
+        border-bottom: 1pt solid black;     
+    }
+    table{
+        width:100%;
+        border-collapse: collapse;
+    }
+    .attribute {
+        font-weight:bold;
+        padding-top:7px;
+        padding-bottom:7px;
+    }
+    #DVLAServices{  
+        border-top-style: solid; 
+        border-top-color: #006bb3; 
+        border-width: 10px;
+    }
+    #serviceLink{
+        margin-bottom:10px;
+    }
+    #button{
+        background-color: green; 
+        color:white; 
+        height: 40px; 
+        width: 200px; 
+        font-size:20px;
+    }
+
 </style>
 
 <div style="margin-top:40px;">
@@ -163,6 +211,133 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
     </div>
 </div>
 
+<div class="container p-0 mt-4 bg-body-secondary">
+    <div class="row">    
+        <div class="col-2"></div>   
+        <div class="col-5">
+                  <h5><strong>Vehicle Details</strong></h5>
+              <table>
+                <tr>
+                    <td class="attribute">Vehicle make</td>
+                    <td>@Model.Make</td>
+                </tr>
+                <tr>
+                    <td class="attribute">Date of first registration</td>
+                    <td>@Model.DateOfRegistration</td>
+                </tr>
+                <tr>
+                    <td class="attribute">Cylinder Capacity</td>
+                    <td>@Model.CylinderCapacity</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">CO2 Emissions</td>
+                    <td>@Model.CO2Emissions</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Fuel Type</td>
+                    <td>@Model.FuelType</td>
+                </tr> <tr>
+                    <td class="attribute">Euro status</td>
+                    <td>@Model.EuroStatus</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Real driving emissions (RDE)</td>
+                    <td>@Model.RealDrivingEmissions</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Export marker</td>
+                    <td>@Model.ExportMarker</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Vehicle Status</td>
+                    <td>@Model.VehicleStatus</td>
+                </tr>
+                <tr>
+                    <td class="attribute">Vehicle Colour</td>
+                    <td>@Model.VehicleColour</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Vehicle type approval</td>
+                    <td>@Model.VehicleTypeApproval</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Wheel plan</td>
+                    <td>@Model.WheelPlan</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Revenue weight</td>
+                    <td>@Model.RevenueWeight</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Date of last V5C</td>
+                    <td>@Model.DateOfLastV5C</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Tax due date</td>
+                    <td>@Model.TaxDueDate</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">Date of last MOT</td>
+                    <td>@Model.DateOfLastMOT</td>
+                </tr>
+                 <tr>
+                    <td class="attribute">MOT due date</td>
+                    <td>@Model.MOTDueDate</td>
+                </tr>
+            </table>
+            <div style="border-bottom: 1pt solid black;">
+                 <h5 style="margin-top:30px;"><strong>View the tax rates for this vehicle</strong></h5>
+                 <p>If you have the latest 11 digit reference number from the V5C registration
+                     certificate (logbook) you can <a href="">view the tax rates for this vehicle.</a>
+                 </p>
+            </div>
+             <div class="container p-0 mt-4 bg-body-secondary">
+                <div class="row pt-0">
+                    <div class="col-8">
+                        <div style="display:inline">
+                           <img id="incorrectDetailarrowIcon" src="~/images/icons8-right-arrow-64.png" width="23" height="23"/>
+                           <button id="IncorrectVehicleDetails" onclick="IncorrectVehicleDetails()"> Incorrect vehicle details?</button>
+                        </div>
+                        <div id="incorrectVehicleDetailsInfo" style="display:none;">
+                          <p style="margin-left:10px; margin-top:10px;">
+                              If your vehicle details are incorrect you may need to <a href="">update them</a>.
+                          </p>           
+                        </div>
+                   </div>
+                </div>
+             </div><br />
+
+              <button id="button" onclick="location.href='@Url.Action("Index", "Home")'">Return to GOV.UK</button>
+
+         </div>
+         <div class="col-3">
+             <div id="DVLAServices">
+                 <h5 style="margin-top:10px;"><strong>DVLA services</strong></h5>
+                 <div id="serviceLink"><a href="">Tax your vehicle</a><br /></div>
+                 <div id="serviceLink"><a href="">Get a vehicle logbook (V5C)</a><br /></div>
+                 <div id="serviceLink"><a href="">Driver and vehicles account: sign in or set up</a><br /></div>
+                 <div id="serviceLink"><a href="">Register your vehicle as off the road (SORN)</a><br /></div>
+                 <div id="serviceLink"><a href="">Change your vehicle's tax class</a><br /></div>
+                 <div id="serviceLink"><a href="">Tell DVLA you've sold, transferred or bought a vehicle</a><br /></div>
+                 <div id="serviceLink"><a href="">Update your vehicle's address</a><br /></div>
+                 <div id="serviceLink"><a href="">Report an untaxed vehicle</a><br /></div>
+                 <div id="serviceLink"><a href="">Check you're not buying a stolen vehicle</a><br /></div>
+                 <div id="serviceLink"><a href="">Tax your vehicle</a><br /></div>
+                 <div id="serviceLink"><a href="">Check if your vehicle can run on E10 petrol</a><br /></div>
+             </div><br /><br />
+             <div id="DVLAServices">
+                 <h5 style="margin-top:10px;"><strong>DVSA services</strong></h5>
+                 <div id="serviceLink"><a href="">Check the MOT status of a vehicle</a><br /></div>
+                 <div id="serviceLink"><a href="">Get MOT reminders</a><br /></div>
+                 <div id="serviceLink"><a href="">Report a vehicle with no MOT</a><br /></div>
+                 <div id="serviceLink"><a href="">MOTs for vehicles registered in Nothern Ireland</a><br /></div>
+                 <div id="serviceLink"><a href="">Check if a vehicle, part or accessory has been recalled</a><br /></div>
+             </div>
+         </div>
+    </div>
+</div>
+
+
 <script>
     function IncorrectTaxStatus() {
       var x = document.getElementById("taxStatusInfo");
@@ -195,4 +370,22 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
          arrow.src = 'https://localhost:7131/images/icons8-right-arrow-64.png';
      }
 }
+
+ function IncorrectVehicleDetails() {
+
+      var x = document.getElementById("incorrectVehicleDetailsInfo");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+
+    var arrow = document.getElementById("incorrectDetailarrowIcon");
+     if(arrow.src === 'https://localhost:7131/images/icons8-right-arrow-64.png'){
+         arrow.src = 'https://localhost:7131/images/icons8-drop-down-64.png';
+     } else {
+         arrow.src = 'https://localhost:7131/images/icons8-right-arrow-64.png';
+     }
+}
+
 </script>

@@ -91,6 +91,9 @@ namespace CustomerApp.Controllers
             string formatReg = FormatReg(detail.RegistrationNumber);
             detail.RegistrationNumber = formatReg;
 
+            detail.DateOfRegistration = FormatDate(detail.DateOfRegistration);
+            detail.DateOfLastMOT = FormatDate(detail.DateOfLastMOT);
+            detail.DateOfLastV5C = FormatDate(detail.DateOfLastV5C);
             detail.TaxDueDate = FormatDate(detail.TaxDueDate);
             detail.MOTDueDate = FormatDate(detail.MOTDueDate);
 
