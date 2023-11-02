@@ -176,7 +176,6 @@ namespace AdminApp.Controllers
         public static bool IsVehicleTaxedAndMOTed(string date)
         {
             DateTime dueDate = DateTime.Parse(date);
-            var test = DateTime.Now;
 
             if (dueDate <= DateTime.Now)
             {

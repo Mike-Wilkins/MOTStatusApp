@@ -1,0 +1,28 @@
+﻿table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.attribute {
+    font-weight: bold;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+td {
+    font-size: 20px;
+}
+
+tr {
+    border-bottom: 1pt solid black;
+}
+
+#regPlate {
+    text-align: center;
+    border-style: solid;
+    width: 140px;
+    padding-top: 7px;
+    background: yellow;
+    border-radius: 8px;
+    margin: 0 auto;
+}
