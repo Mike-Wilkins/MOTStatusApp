@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using MOTStatusWebApi.Data;
 using MOTStatusWebApi.Interfaces;
@@ -6,6 +7,7 @@ using MOTStatusWebApi.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IMOTStatusDetailsRepository, MOTStatusDetailsRepository>();
 builder.Services.AddDbContext<DataContext>(options =>

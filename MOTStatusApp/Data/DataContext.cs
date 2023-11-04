@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using MOTStatusWebApi.Data;
 
 namespace MOTStatusWebApi.Data

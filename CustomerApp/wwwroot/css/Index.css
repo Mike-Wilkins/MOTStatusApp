@@ -1,0 +1,29 @@
+﻿.regInput {
+    height: 40px;
+    width: 250px;
+    border-style: solid;
+}
+
+.errorRegInput {
+    height: 40px;
+    width: 250px;
+    outline: 2px solid red;
+    margin-left: 10px;
+}
+
+input:focus {
+    outline: 3px solid yellow;
+    border: solid 3px black;
+}
+
+.button {
+    background-color: green;
+    color: white;
+    height: 40px;
+    width: 120px;
+    font-size: 20px;
+}
+
+#buttonactive:active {
+    outline: 3px solid yellow;
+}

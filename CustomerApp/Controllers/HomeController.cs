@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MOTStatusWebApi.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -23,7 +24,7 @@ namespace CustomerApp.Controllers
             ViewBag.RegistrationValidationError = false;
             ViewBag.RegistrationFormatError = false;
             ViewBag.RegistrationNotFoundError = false;
-            return View();
+            return View(); 
         }
 
         [HttpPost]

@@ -20,6 +20,7 @@ namespace AdminApp.Controllers
         }
         public IActionResult Index()
         {
+
             ViewBag.RegistrationValidationError = false;
             ViewBag.RegistrationFormatError = false;
             ViewBag.RegistrationNotFoundError = false;
@@ -67,6 +68,7 @@ namespace AdminApp.Controllers
 
             return View(details);
         }
+
         public static string FormatReg(string registration)
         {
             var result = registration.Insert(4, " ");
@@ -177,7 +179,7 @@ namespace AdminApp.Controllers
         {
             DateTime dueDate = DateTime.Parse(date);
 
-            if (dueDate <= DateTime.Now)
+            if (dueDate < DateTime.Now)
             {
                 return false;
             }

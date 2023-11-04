@@ -1,75 +1,8 @@
 ﻿@model MOTStatusWebApi.Data.MOTStatusDetails
 
-<style>
-     #regPlate{
-       background:#ffd633; 
-       width:140px; 
-       text-align:center; 
-       border-radius:8px;
-       height:40px;
-       padding-top: 5px;
-       margin-bottom:7px;     
-    }
-     table{
-        width:70%;
-        border-collapse: collapse;
-    }
-    .attribute {
-        font-weight:bold;
-        padding-top:7px;
-        padding-bottom:7px;      
-    }
-
-    td{
-        font-size: 20px;
-    }
-    label{
-        float:left;
-        margin:5px;
-        font-size: 20px;
-        padding-left:7px;   
-    }
-    tr{
-        border-bottom: 1pt solid black;         
-    }
-    input {
-        float:left;
-        margin:5px;
-        width:35px;
-        height:35px;
-        vertical-align: middle;
-       
-       
-    }
-    .button{
-        background-color: green; 
-        color:white; 
-        height: 40px; 
-        width: 120px; 
-        font-size:20px;
-    }
-
-    #buttonactive:active{
-      outline: 3px solid yellow; 
-    }
-     #IncorrectVehicleDetails{
-        background: none!important;
-        border: none;
-        padding: 0!important;
-        /*optional*/
-        font-family: arial, sans-serif;
-        /*input has OS specific font-family*/
-        color: #0059b3;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-    #incorrectVehicleDetailsInfo{
-        
-        border-left-style: solid; 
-        border-left-color: #b3b3b3; 
-        border-width: 4px;
-    }
-</style>
+<head>
+    <link href="~/css/DetailConfirmation.css" rel="stylesheet" type="text/css"/>
+</head>
 
 <div class="container p-3 mt-4 bg-body-secondary">
     <div class="row pt-4">
