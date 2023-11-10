@@ -30,7 +30,9 @@ namespace AdminApp.Controllers
         [HttpPost]
         public IActionResult Index(string registration)
         {
-           if(registration == null)
+           registration= registration.ToUpper();
+            
+            if(registration == null)
             {
                ViewBag.RegistrationValidationError = true;
                ViewBag.RegistrationFormatError = false;
@@ -149,13 +151,18 @@ namespace AdminApp.Controllers
             details.Taxed = IsVehicleTaxedAndMOTed(details.TaxDueDate);
             details.MOTed = IsVehicleTaxedAndMOTed(details.MOTDueDate);
 
-            if (details.Taxed)
-            {
-                details.VehicleStatus = "Taxed";
-            }
-            else { details.VehicleStatus = "Not Taxed"; }
+            details.VehicleStatus = IsTaxedLabel(details.Taxed);
 
             return (details);
+        }
+
+        public static string IsTaxedLabel(bool taxed)
+        {
+            if (taxed)
+            {
+                return "Taxed";
+            }
+            return "Not Taxed";
         }
 
         public static string FormatDate(string detailsDate)
