@@ -1,11 +1,6 @@
 using Xunit;
 using System;
 using AdminApp.Controllers;
-using Moq;
-using MOTStatusWebApi.Interfaces;
-using MOTStatusWebApi.Data;
-using MOTStatusWebApi.Controllers;
-using MOTStatusWebApi.Repository;
 
 namespace TestMOTStatusApp.Test
 {
