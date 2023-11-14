@@ -70,58 +70,29 @@ namespace TestMOTStatusApp.Test
             mockDetailRepository.Setup(p => p.Delete(It.IsAny<MOTStatusDetails>())).Returns(
                  (MOTStatusDetails target) =>
                  {
-                     if (target.Id.Equals(default(int)))
+
+                     if (target.Id.Equals(0))
                      {
-                         return true;
+                         return false;
                      }
                      else
                      {
                          target.Id = details.Count() - 1;
-                         details.Remove(target);                   
+                         details.Remove(target);
                      }
 
-                     return false;
+                     return true;
                  });
 
 
             mockDetailRepository.Setup(p => p.Update(It.IsAny<MOTStatusDetails>())).Returns(
                 (MOTStatusDetails target) => 
                 {
-                    if (target.Id.Equals(default(int)))
+                    if (target.Id.Equals(0))
                     {
-                        return true;
+                        return false;
                     }
-                    else
-                    {
-                        var original = details.Where(q => q.Id == target.Id).Single();
-
-                        if (original == null)
-                        {
-                            return false;
-                        }
-
-                        original.RegistrationNumber = target.RegistrationNumber;
-                        original.Make = target.Make;
-                        original.DateOfRegistration = target.DateOfRegistration;
-                        original.CylinderCapacity = target.CylinderCapacity;
-                        original.CO2Emissions = target.CO2Emissions;
-                        original.FuelType = target.FuelType;
-                        original.EuroStatus = target.EuroStatus;
-                        original.RealDrivingEmissions = target.RealDrivingEmissions;
-                        original.ExportMarker = target.ExportMarker;
-                        original.VehicleStatus = target.VehicleStatus;
-                        original.VehicleColour = target.VehicleColour;
-                        original.VehicleTypeApproval = target.VehicleTypeApproval;
-                        original.WheelPlan = target.WheelPlan;
-                        original.RevenueWeight = target.RevenueWeight;
-                        original.DateOfLastV5C = target.DateOfLastV5C;
-                        original.Taxed = target.Taxed;
-                        original.TaxDueDate = target.TaxDueDate;
-                        original.MOTed = target.MOTed;
-                        original.MOTDueDate = target.MOTDueDate;
-                        original.DateOfLastMOT = target.DateOfLastMOT;
-                    }
-                    return false;
+                    return true;
                 });
 
 
@@ -131,41 +102,14 @@ namespace TestMOTStatusApp.Test
             mockDetailRepository.Setup(p => p.Add(It.IsAny<MOTStatusDetails>())).Returns(
                 (MOTStatusDetails target) =>
                 {
-                    if (target.Id.Equals(default(int)))
+                    if (target.Id.Equals(0))
                     {
                         target.Id = details.Count() + 1;
                         details.Add(target);
                     }
                     else
                     {
-                        var original = details.Where(q => q.Id == target.Id).Single();
-
-                        if (original == null)
-                        {
-                            return false;
-                        }
-
-                        original.RegistrationNumber = target.RegistrationNumber;
-                        original.Make = target.Make;
-                        original.DateOfRegistration = target.DateOfRegistration;
-                        original.CylinderCapacity = target.CylinderCapacity;
-                        original.CO2Emissions = target.CO2Emissions;
-                        original.FuelType = target.FuelType;
-                        original.EuroStatus = target.EuroStatus;
-                        original.RealDrivingEmissions = target.RealDrivingEmissions;
-                        original.ExportMarker = target.ExportMarker;
-                        original.VehicleStatus = target.VehicleStatus;
-                        original.VehicleColour = target.VehicleColour;
-                        original.VehicleTypeApproval = target.VehicleTypeApproval;
-                        original.WheelPlan = target.WheelPlan;
-                        original.RevenueWeight = target.RevenueWeight;
-                        original.DateOfLastV5C = target.DateOfLastV5C;
-                        original.Taxed = target.Taxed;
-                        original.TaxDueDate = target.TaxDueDate;
-                        original.MOTed = target.MOTed;
-                        original.MOTDueDate = target.MOTDueDate;
-                        original.DateOfLastMOT = target.DateOfLastMOT;
-
+                        return false;
                     }
                     return true;
                 });
@@ -300,14 +244,16 @@ namespace TestMOTStatusApp.Test
             details.RegistrationNumber = "GT04PRQ";
 
             this.MockDetailRepository.Update(details);
+            this.MockDetailRepository.Save();
+
             Assert.Equal("GT04PRQ", details.RegistrationNumber);
 
 
             MOTStatusDetails updatedDetails = this.MockDetailRepository.GetStatusDetail(11);
             Assert.Equal("GT04PRQ", updatedDetails.RegistrationNumber);
 
-            int updatedDeleteCount = this.MockDetailRepository.GetStatusDetails().Count;
-            Assert.Equal(2, updatedDeleteCount);
+            int verifyVehicleCount = this.MockDetailRepository.GetStatusDetails().Count;
+            Assert.Equal(2, verifyVehicleCount);
         }
 
 
