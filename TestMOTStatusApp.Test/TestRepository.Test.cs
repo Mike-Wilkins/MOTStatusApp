@@ -84,7 +84,8 @@ namespace TestMOTStatusApp.Test
                      return true;
                  });
 
-
+            mockDetailRepository.Setup(p => p.StatusDetailExists(It.IsAny<int>())).Returns((int i) => details.Any(x => x.Id == i));
+            mockDetailRepository.Setup(p => p.StatusDetailExists(It.IsAny<string>())).Returns((string i) => details.Any(x => x.RegistrationNumber == i));
             mockDetailRepository.Setup(p => p.Update(It.IsAny<MOTStatusDetails>())).Returns(
                 (MOTStatusDetails target) => 
                 {
@@ -94,7 +95,6 @@ namespace TestMOTStatusApp.Test
                     }
                     return true;
                 });
-
 
             mockDetailRepository.Setup(p => p.GetStatusDetail(It.IsAny<int>())).Returns((int i) => details.FirstOrDefault(x => x.Id == i));
             mockDetailRepository.Setup(p => p.GetRegistrationNumber(It.IsAny<string>())).Returns((string i) => details.FirstOrDefault(x => x.RegistrationNumber == i));
@@ -115,6 +115,26 @@ namespace TestMOTStatusApp.Test
                 });
 
             this.MockDetailRepository = mockDetailRepository.Object;           
+        }
+
+        [Fact]
+        public void StatusDetailExists_Should_Return_True_When_Vehicle_Id_Entered()
+        {
+            bool detailsExist = this.MockDetailRepository.StatusDetailExists(11);
+            Assert.True(detailsExist);
+
+            bool detailsDoNotExist = this.MockDetailRepository.StatusDetailExists(1);
+            Assert.False(detailsDoNotExist);
+        }
+
+        [Fact]
+        public void StatusDetailExists_Should_Return_True_When_Vehicle_Registration_Entered()
+        {
+            bool detailsExist = this.MockDetailRepository.StatusDetailExists("NA27TSQ");
+            Assert.True(detailsExist);
+
+            bool detailsDoNotExist = this.MockDetailRepository.StatusDetailExists("BH09YTT");
+            Assert.False(detailsDoNotExist);
         }
 
         [Fact]
@@ -255,6 +275,8 @@ namespace TestMOTStatusApp.Test
             int verifyVehicleCount = this.MockDetailRepository.GetStatusDetails().Count;
             Assert.Equal(2, verifyVehicleCount);
         }
+
+      
 
 
     }
