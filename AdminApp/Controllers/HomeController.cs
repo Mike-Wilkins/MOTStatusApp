@@ -30,7 +30,8 @@ namespace AdminApp.Controllers
         [HttpPost]
         public IActionResult Index(string registration)
         {
-           registration= registration.ToUpper();
+
+            registration = registration.ToUpper().Replace(" ", "");
             
             if(registration == null)
             {
@@ -125,9 +126,12 @@ namespace AdminApp.Controllers
             ModelState.Remove(nameof(details.TaxDueDate));
             ModelState.Remove(nameof(details.MOTDueDate));
 
+            //details.RegistrationNumber = details.RegistrationNumber.ToUpper().Replace(" ", "");
+
             if (!ModelState.IsValid)
             {
                 return View(details);
+          
             }
 
             details = FormatObjectDetails(details);
