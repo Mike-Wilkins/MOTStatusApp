@@ -13,12 +13,21 @@ variables:
     buildPlatform: 'Any CPU'
     buildConfiguration: 'Release'
     solution: '**/MOTStatusApp.sln'
-    projest: 'MOTStatusWebApi.csproj'
+    project: 'MOTStatusWebApi.csproj'
 
 steps:
 - task: NuGetToolInstaller@1
   name: 'NuGetToolInstaller'
   displayName: 'Nuget Tool Installer'
 
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '$(solution)'
+    feedsToUse: 'select'
 
-
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(solution)'
+    arguments: '--configuration $(BuildConfiguration)'
