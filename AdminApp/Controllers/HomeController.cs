@@ -24,14 +24,13 @@ namespace AdminApp.Controllers
             ViewBag.RegistrationValidationError = false;
             ViewBag.RegistrationFormatError = false;
             ViewBag.RegistrationNotFoundError = false;
+           
             return View();
         }
 
         [HttpPost]
         public IActionResult Index(string registration)
         {
-
-            registration = registration.ToUpper().Replace(" ", "");
             
             if(registration == null)
             {
@@ -39,6 +38,8 @@ namespace AdminApp.Controllers
                ViewBag.RegistrationFormatError = false;
                 return View();
             }
+
+            registration = registration.ToUpper().Replace(" ", "");
 
             var regexValidation = VehicleRegEx(registration);          
             
@@ -83,6 +84,39 @@ namespace AdminApp.Controllers
             var regExIsValid = Regex.IsMatch(registration, @"^(?=.{1,7})(([a-zA-Z]?){1,3}(\d){1,4}([a-zA-Z]?){1,3})$");
 
             return regExIsValid;
+        }
+
+        public IActionResult Delete(int Id)
+        {
+            var details = _statusDetailsRepository.GetStatusDetails().
+              Where(d => d.Id == Id).FirstOrDefault();
+
+            string formatReg = FormatReg(details.RegistrationNumber);
+            ViewBag.FormatReg = formatReg;
+
+            ViewBag.VehicleDeleted = false;
+
+            details = FormatDatePicker(details);
+
+            return View(details);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult DeleteVehicle(int Id)
+        {
+
+            var details = _statusDetailsRepository.GetStatusDetails().
+                Where(d => d.Id == Id).FirstOrDefault();
+
+            _statusDetailsRepository.Delete(details);
+
+            string formatReg = FormatReg(details.RegistrationNumber);
+            ViewBag.FormatReg = formatReg;
+
+            ViewBag.VehicleDeleted = true;
+
+            return View(details);
         }
 
         public IActionResult Update(int Id)

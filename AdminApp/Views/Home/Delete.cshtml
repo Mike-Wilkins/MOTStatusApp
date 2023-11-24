@@ -1,0 +1,119 @@
+﻿@model MOTStatusWebApi.Data.MOTStatusDetails
+
+<head>
+    <link href="~/css/Delete.css" rel="stylesheet" type="text/css"/>
+</head>
+
+
+
+
+    @if(@ViewBag.VehicleDeleted == true)
+    {
+        <div style="margin-top:50px;">
+              <h4 id="vehicleDetailsDeletedConfirmation">Vehicle @Model.RegistrationNumber has been removed from DVLA records</h4>
+        </div>
+      
+         <a asp-action="Index" class="btn btn-success" style="margin-left:480px; width:250px;">Return to GOV.UK</a>
+    }else{
+
+    
+
+    <h3 style="text-align:center; background: #ff9999; height:60px; padding-top:10px; width:830px; margin-left:210px;">Are you sure you want to delete vehicle details for @ViewBag.FormatReg ?</h3>
+
+        <form asp-action="Delete">
+             
+            <div class="container p-3 mt-2 bg-body-secondary">
+             <div class="row">
+                 <div class="col-2"></div>
+     
+                 <div class="col-10" >
+                     <span>
+                        <button type="submit" class="btn btn-danger" style="margin-left:120px; width:250px;">Delete</button>
+                        <a asp-action="Index" class="btn btn-success" style="margin-left:50px; width:250px;">Return to GOV.UK</a>
+                     </span>                   
+                 </div>
+             </div>
+        </div>
+
+        <div class="container p-3 mt-0 bg-body-secondary">
+            <div class="row pt-1">
+                <h4>Vehicle Details</h4>
+                <div class="col-6">
+                    <table>
+                        <tr>
+                            <td class="attribute">Vehicle make</td>
+                            <td>@Model.Make</td>
+                        </tr>
+                        <tr>
+                            <td class="attribute">Date of first registration</td>
+                            <td>@Model.DateOfRegistration</td>
+                        </tr>
+                        <tr>
+                            <td class="attribute">Cylinder Capacity</td>
+                            <td>@Model.CylinderCapacity</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">CO2 Emissions</td>
+                            <td>@Model.CO2Emissions</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Fuel Type</td>
+                            <td>@Model.FuelType</td>
+                        </tr> <tr>
+                            <td class="attribute">Euro status</td>
+                            <td>@Model.EuroStatus</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Real driving emissions (RDE)</td>
+                            <td>@Model.RealDrivingEmissions</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Export marker</td>
+                            <td>@Model.ExportMarker</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Vehicle Status</td>
+                            <td>@Model.VehicleStatus</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <table>
+                         <tr>
+                            <td class="attribute">Vehicle Colour</td>
+                            <td>@Model.VehicleColour</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Vehicle type approval</td>
+                            <td>@Model.VehicleTypeApproval</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Wheel plan</td>
+                            <td>@Model.WheelPlan</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Revenue weight</td>
+                            <td>@Model.RevenueWeight</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Date of last V5C</td>
+                            <td>@Model.DateOfLastV5C</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Tax due date</td>
+                            <td>@Model.TaxDueDate</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">Date of last MOT</td>
+                            <td>@Model.DateOfLastMOT</td>
+                        </tr>
+                         <tr>
+                            <td class="attribute">MOT due date</td>
+                            <td>@Model.MOTDueDate</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </form>
+}

@@ -30,14 +30,14 @@ namespace CustomerApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string registration)
         {
-            registration = registration.Replace(" ", "");
-
             if (registration == null)
             {
                 ViewBag.RegistrationValidationError = true;
                 ViewBag.RegistrationFormatError = false;
                 return View();
             }
+
+            registration = registration.Replace(" ", "");
 
             var regexValidation = VehicleRegEx(registration);
 
