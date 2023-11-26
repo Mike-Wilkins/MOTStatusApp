@@ -1,10 +1,18 @@
 ﻿using AdminApp.Models;
+using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using MOTStatusWebApi.Data;
 using MOTStatusWebApi.Interfaces;
 using System.Diagnostics;
-using System.Linq;
+using System.Globalization;
 using System.Text.RegularExpressions;
+using System.IO;
+using System.Web;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Hosting;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdminApp.Controllers
 {
@@ -12,11 +20,13 @@ namespace AdminApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMOTStatusDetailsRepository _statusDetailsRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public HomeController(ILogger<HomeController> logger, IMOTStatusDetailsRepository statusDetailsRepository)
+        public HomeController(ILogger<HomeController> logger, IMOTStatusDetailsRepository statusDetailsRepository, IHostingEnvironment hostingEnvironment)
         {
             _logger = logger;
             _statusDetailsRepository = statusDetailsRepository;
+            _hostingEnvironment = hostingEnvironment;
         }
         public IActionResult Index()
         {
@@ -247,7 +257,52 @@ namespace AdminApp.Controllers
             return (details);
         }
 
+        public IActionResult UploadCSV()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public IActionResult UploadCSV(IFormFile file)
+        {
+
+            string filePath = null;
+            string uniqueFileName = null;
+
+            if(file != null)
+            {
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "csvfiles");
+
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+
+                using (var csvFile = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(csvFile);
+                }  
+
+
+                using (var reader = new StreamReader(filePath))
+                {
+                    using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                       var records = csvReader.GetRecords<MOTStatusDetails>().ToList();
+
+                      foreach (var record in records)
+                        {
+                            var formatedDetailsObject = FormatObjectDetails(record);
+
+                            _statusDetailsRepository.Add(formatedDetailsObject);
+                        }
+                    }
+                }
+
+                System.IO.File.Delete(filePath);
+            }
+            return View();
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
