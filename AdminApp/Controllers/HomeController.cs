@@ -265,12 +265,20 @@ namespace AdminApp.Controllers
         [HttpPost]
         public IActionResult UploadCSV(IFormFile file)
         {
+            ViewBag.IncorrectFileType = false;
+            ViewBag.CSVFileNullError = false;
 
             string filePath = null;
             string uniqueFileName = null;
 
             if(file != null)
             {
+                if (file.ContentType != "text/csv")
+                {
+                    ViewBag.IncorrectFileType = true;
+                    return View();
+                }
+
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "csvfiles");
 
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
@@ -300,6 +308,11 @@ namespace AdminApp.Controllers
                 }
 
                 System.IO.File.Delete(filePath);
+            }
+            else
+            {
+                ViewBag.CSVFileNullError = true;
+                return View();
             }
             return View();
         }

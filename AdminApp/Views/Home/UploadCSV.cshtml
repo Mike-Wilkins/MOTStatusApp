@@ -12,6 +12,18 @@
             <div class="col-5">
                 <form method="post" enctype="multipart/form-data">
                     <div class="md-3">
+
+                        @if(ViewBag.CSVFileNullError == true)
+                        {
+                            <h5 style="color:red">Select a correctly formatted CSV file</h5>
+                        }else if(ViewBag.IncorrectFileType == true)
+                        {
+                             <h5 style="color:red">Incorrect file format. The file must be CSV format.</h5>
+
+                        }
+
+
+
                         <label class="form-label">Upload File</label>
                         <input type="file" name="file" class="form-control" />
                     </div>
