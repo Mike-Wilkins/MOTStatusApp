@@ -265,7 +265,6 @@ namespace AdminApp.Controllers
 
             return (details);
         }
-
         public bool RegistrationIsUnique(string registration)
         {
             var details = _statusDetailsRepository.GetStatusDetails().
@@ -278,7 +277,6 @@ namespace AdminApp.Controllers
 
             return (true);
         }
-
 
         public IActionResult UploadCSV()
         {
@@ -318,10 +316,12 @@ namespace AdminApp.Controllers
                     {
                        var records = csvReader.GetRecords<MOTStatusDetails>().ToList();
                        var recordErrors = CSVIsFormattedCorrectly(records);
-
+                       csvReader.Dispose();
+                    
                         if(recordErrors == true)
                         {
                             ViewBag.CSVFileFormatError = true;
+                            System.IO.File.Delete(filePath);
                             return View();
                         }
 
