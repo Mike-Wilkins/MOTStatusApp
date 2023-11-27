@@ -391,7 +391,7 @@ namespace AdminApp.Controllers
                 var details = _statusDetailsRepository.GetStatusDetails().
                FirstOrDefault(d => d.RegistrationNumber == record.RegistrationNumber);
 
-                if ( details != null)
+                if ( details != null || record.RegistrationNumber.Length > 7)
                 {
                     fileErrorFound = true;
                 }
