@@ -1,6 +1,6 @@
 ﻿
 <div class="text-center">
-    <h4>Bulk upload vehicle details CSV file here</h4>
+    <h3>Bulk upload vehicle details CSV file here</h3>
 </div>
 
 
@@ -11,25 +11,65 @@
 
             <div class="col-5">
                 <form method="post" enctype="multipart/form-data">
-                    <div class="md-3">
 
-                        @if(ViewBag.CSVFileNullError == true)
-                        {
-                            <h5 style="color:red">Select a correctly formatted CSV file</h5>
-                        }else if(ViewBag.IncorrectFileType == true)
-                        {
-                             <h5 style="color:red">Incorrect file format. The file must be CSV format.</h5>
-
-                        }
-
-
-
-                        <label class="form-label">Upload File</label>
-                        <input type="file" name="file" class="form-control" />
-                    </div>
-                    <div class="mb-3 mt-3">
-                        <button type="submit" class="btn btn-primary">Upload</button>
-                    </div>
+                    @if(ViewBag.IncorrectFileType == false && ViewBag.CSVFileNullError == false && ViewBag.CSVFileFormatError == false && ViewBag.FileUploadSuccess == false)
+                    {
+                         <div class="md-3">
+                            <label class="form-label">Upload File</label>
+                            <input type="file" name="file" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    }else if(ViewBag.CSVFileNullError == true)
+                    {
+                        <div class="md-3">
+                            <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
+                              <h4 style="color:red; margin-left:10px"><strong>Enter a valid CSV file</strong></h4>                         
+                            </div> 
+                            <label class="form-label">Upload File</label>
+                            <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    }else if(ViewBag.IncorrectFileType == true)
+                    {
+                         <div class="md-3">
+                            <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
+                              <h4 style="color:red; margin-left:10px"><strong>Incorrect file type. The file must be formatted as a CSV file.</strong></h4>                         
+                            </div> 
+                            <label class="form-label">Upload File</label>
+                            <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    }else if(ViewBag.CSVFileFormatError == true)
+                    {
+                         <div class="md-3">
+                            <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
+                              <h4 style="color:red; margin-left:10px"><strong>Errors were found when attempting to upload your file.</strong></h4>                         
+                            </div> 
+                            <label class="form-label">Upload File</label>
+                            <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    }else if(ViewBag.FileUploadSuccess == true)
+                    {
+                        <div class="md-3">
+                            <div style="border-left-style: solid; border-left-color: green; border-width: 5px">                           
+                              <h4 style="color:green; margin-left:10px"><strong>File uploaded successfully.</strong></h4>                         
+                            </div> 
+                            <label class="form-label">Upload File</label>
+                            <input type="file" name="file" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    }
                 </form>
             </div>
         </div>

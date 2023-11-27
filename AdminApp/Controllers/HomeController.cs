@@ -259,15 +259,16 @@ namespace AdminApp.Controllers
 
         public IActionResult UploadCSV()
         {
+            ViewBag.IncorrectFileType = false;
+            ViewBag.CSVFileNullError = false;
+            ViewBag.CSVFileFormatError = false;
+            ViewBag.FileUploadSuccess = false;
             return View();
         }
 
         [HttpPost]
         public IActionResult UploadCSV(IFormFile file)
         {
-            ViewBag.IncorrectFileType = false;
-            ViewBag.CSVFileNullError = false;
-
             string filePath = null;
             string uniqueFileName = null;
 
@@ -280,28 +281,30 @@ namespace AdminApp.Controllers
                 }
 
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "csvfiles");
-
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-
                 filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
 
                 using (var csvFile = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(csvFile);
                 }  
 
-
                 using (var reader = new StreamReader(filePath))
                 {
                     using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
                        var records = csvReader.GetRecords<MOTStatusDetails>().ToList();
+                       var recordErrors = CSVIsFormattedCorrectly(records);
 
-                      foreach (var record in records)
+                        if(recordErrors == true)
+                        {
+                            ViewBag.CSVFileFormatError = true;
+                            return View();
+                        }
+
+                        foreach (var record in records)
                         {
                             var formatedDetailsObject = FormatObjectDetails(record);
-
                             _statusDetailsRepository.Add(formatedDetailsObject);
                         }
                     }
@@ -314,9 +317,54 @@ namespace AdminApp.Controllers
                 ViewBag.CSVFileNullError = true;
                 return View();
             }
+
+            ViewBag.FileUploadSuccess = true;
             return View();
         }
 
+        public static bool CSVIsFormattedCorrectly(List<MOTStatusDetails> records)
+        {
+            bool fileErrorFound = false;
+
+            foreach(var record in records)
+            {
+                if (String.IsNullOrEmpty(record.Make) ||
+                    String.IsNullOrEmpty(record.CylinderCapacity) ||
+                    String.IsNullOrEmpty(record.CO2Emissions) ||
+                    String.IsNullOrEmpty(record.FuelType) ||
+                    String.IsNullOrEmpty(record.WheelPlan) ||
+                    String.IsNullOrEmpty(record.EuroStatus) ||
+                    String.IsNullOrEmpty(record.RealDrivingEmissions) ||
+                    String.IsNullOrEmpty(record.ExportMarker) ||
+                    String.IsNullOrEmpty(record.VehicleColour) ||
+                    String.IsNullOrEmpty(record.VehicleTypeApproval) ||          
+                    String.IsNullOrEmpty(record.RevenueWeight)
+                    )
+                {
+                    fileErrorFound = true;
+                }
+                
+            }
+
+            foreach(var record in records)
+            {
+             var dateOfRegistrationresult = Regex.IsMatch(record.DateOfRegistration, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
+             var dateOfLastMOTresult = Regex.IsMatch(record.DateOfLastMOT, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
+             var dateOfLastV5Cresult = Regex.IsMatch(record.DateOfLastV5C, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
+             var regExIsValid = Regex.IsMatch(record.RegistrationNumber, @"^(?=.{1,7})(([a-zA-Z]?){1,3}(\d){1,4}([a-zA-Z]?){1,3})$");
+
+                if (record.Id != 0 ||
+                    !regExIsValid ||              
+                    !dateOfRegistrationresult || 
+                    !dateOfLastMOTresult || 
+                    !dateOfLastV5Cresult
+                    )
+                {
+                    fileErrorFound = true;
+                }
+            }
+             return (fileErrorFound);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
