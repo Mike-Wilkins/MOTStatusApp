@@ -25,6 +25,9 @@
                             <label asp-for="RegistrationNumber" class="attribute"></label>
                             <input asp-for="RegistrationNumber" class="form-control" maxlength="10" placeholder="e.g DF05TYQ"/>
                             <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                            @if(ViewBag.RegIsUnique == false){
+                                <a style="color:red">Registration number already exists</a>
+                            }
                         </div>
                         <div class="mb-3">
                             <label asp-for="Make" class="attribute"></label>

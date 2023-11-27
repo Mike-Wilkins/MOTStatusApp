@@ -161,6 +161,7 @@ namespace AdminApp.Controllers
         public IActionResult Create()
         {
             ViewBag.RegistrationFormatError = false;
+            ViewBag.RegIsUnique = true;
             return View();
         }
 
@@ -176,6 +177,14 @@ namespace AdminApp.Controllers
             {
                 return View(details);
           
+            }
+
+            var regIsUnique = RegistrationIsUnique(details.RegistrationNumber);
+
+            if(regIsUnique == false)
+            {
+                ViewBag.RegIsUnique = false;
+                return View();
             }
 
             details = FormatObjectDetails(details);
@@ -257,6 +266,20 @@ namespace AdminApp.Controllers
             return (details);
         }
 
+        public bool RegistrationIsUnique(string registration)
+        {
+            var details = _statusDetailsRepository.GetStatusDetails().
+                FirstOrDefault(d => d.RegistrationNumber == registration);
+
+            if(details != null)
+            {
+                return false;
+            }
+
+            return (true);
+        }
+
+
         public IActionResult UploadCSV()
         {
             ViewBag.IncorrectFileType = false;
@@ -322,7 +345,7 @@ namespace AdminApp.Controllers
             return View();
         }
 
-        public static bool CSVIsFormattedCorrectly(List<MOTStatusDetails> records)
+        public bool CSVIsFormattedCorrectly(List<MOTStatusDetails> records)
         {
             bool fileErrorFound = false;
 
@@ -342,8 +365,7 @@ namespace AdminApp.Controllers
                     )
                 {
                     fileErrorFound = true;
-                }
-                
+                }            
             }
 
             foreach(var record in records)
@@ -363,6 +385,18 @@ namespace AdminApp.Controllers
                     fileErrorFound = true;
                 }
             }
+
+            foreach(var record in records)
+            {
+                var details = _statusDetailsRepository.GetStatusDetails().
+               FirstOrDefault(d => d.RegistrationNumber == record.RegistrationNumber);
+
+                if ( details != null)
+                {
+                    fileErrorFound = true;
+                }
+            }
+
              return (fileErrorFound);
         }
 
