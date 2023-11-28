@@ -27,10 +27,7 @@
                          <div class="md-3">
                             <label class="form-label">Upload File</label>
                             <input style="outline: 1px solid black;" type="file" name="file" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
+                        </div>                   
                     }else if(ViewBag.CSVFileNullError == true)
                     {
                         <div class="md-3">
@@ -39,10 +36,7 @@
                             </div> 
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
+                        </div>                   
                     }else if(ViewBag.IncorrectFileType == true)
                     {
                          <div class="md-3">
@@ -51,10 +45,7 @@
                             </div> 
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
+                        </div>                   
                     }else if(ViewBag.CSVFileFormatError == true)
                     {
                          <div class="md-3">
@@ -63,10 +54,7 @@
                             </div> 
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
+                        </div>               
                     }else if(ViewBag.RegistrationError == true)
                     {
                         <div class="md-3">
@@ -75,10 +63,7 @@
                             </div> 
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
+                        </div>               
                     }else if(ViewBag.FileUploadSuccess == true)
                     {
                         <div class="md-3">
@@ -87,11 +72,11 @@
                             </div> 
                             <label class="form-label">Upload File</label>
                             <input type="file" name="file" class="form-control" />
-                        </div>
-                        <div class="mb-3 mt-3">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
+                        </div>                    
                     }
+                     <div class="mb-3 mt-3">
+                         <button type="submit" class="btn btn-primary">Upload</button>
+                     </div>
                 </form>
             </div>
         </div>
