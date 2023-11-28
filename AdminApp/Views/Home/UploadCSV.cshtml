@@ -1,14 +1,24 @@
 ﻿
-<div class="text-center">
-    <h3>Bulk upload vehicle details CSV file here</h3>
-</div>
 
 
-<div class="container">
+<div class="container" style="margin-top:60px;">
     <div class="mb-3 mt-3">
         <div class="row pb-2">
-            <div class="col-3"></div>
-
+            <div class="col-5" style="outline: 2px solid green;" >
+                <p><h5 style="text-align:center; margin-top:20px;">Instructions for bulk uploading vehicle details CSV files</h5></p>
+                <p>Download and complete the <a href="~/csvTemplate/VehicleDetailsTemplate.csv" download>Vehicle Details Template</a> and
+                    read the below instructions before submitting your form. You can download an example completed form <a href="~/csvTemplate/VehicleDetails.csv" download>here</a>.</p>
+                <ul>
+                  <li>Ensure that ALL fields are completed.</li>
+                  <li>Do not remove/change the preset values in the Id, TaxDueDate or MOTDueDate columns.</li>
+                  <li>Date field must be entered in the form dd/mm/yyyy e.g. 23/03/2023.</li>
+                  <li>Registration numbers must be no longer than 7 characters long and conform to DVLA format guidlines.</li>
+                  <li>Duplicate registration numbers are not allowed. If an error occurs while attempting to upload your file, and your .csv file does not contain duplicates, you may need
+                      to check with Gov.UK DVLA to see whether one or more registration numbers are already present on the database.
+                  </li>
+                </ul>  
+            </div>
+            <div class="col-1"></div>
             <div class="col-5">
                 <form method="post" enctype="multipart/form-data">
 
@@ -16,7 +26,7 @@
                     {
                          <div class="md-3">
                             <label class="form-label">Upload File</label>
-                            <input type="file" name="file" class="form-control" />
+                            <input style="outline: 1px solid black;" type="file" name="file" class="form-control" />
                         </div>
                         <div class="mb-3 mt-3">
                             <button type="submit" class="btn btn-primary">Upload</button>
@@ -57,11 +67,23 @@
                         <div class="mb-3 mt-3">
                             <button type="submit" class="btn btn-primary">Upload</button>
                         </div>
+                    }else if(ViewBag.RegistrationError == true)
+                    {
+                        <div class="md-3">
+                            <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
+                              <h4 style="color:red; margin-left:10px"><strong>Duplicate registration numbers were found when attempting to upload your file.</strong></h4>                         
+                            </div> 
+                            <label class="form-label">Upload File</label>
+                            <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
                     }else if(ViewBag.FileUploadSuccess == true)
                     {
                         <div class="md-3">
                             <div style="border-left-style: solid; border-left-color: green; border-width: 5px">                           
-                              <h4 style="color:green; margin-left:10px"><strong>File uploaded successfully.</strong></h4>                         
+                              <h4 style="color:green; margin-left:10px"><strong>@ViewBag.RecordUploadCount files uploaded successfully.</strong></h4>                         
                             </div> 
                             <label class="form-label">Upload File</label>
                             <input type="file" name="file" class="form-control" />

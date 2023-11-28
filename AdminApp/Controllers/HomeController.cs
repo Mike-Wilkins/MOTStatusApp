@@ -6,13 +6,7 @@ using MOTStatusWebApi.Interfaces;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.IO;
-using System.Web;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AdminApp.Controllers
 {
@@ -95,7 +89,6 @@ namespace AdminApp.Controllers
 
             return regExIsValid;
         }
-
         public IActionResult Delete(int Id)
         {
             var details = _statusDetailsRepository.GetStatusDetails().
@@ -194,7 +187,6 @@ namespace AdminApp.Controllers
             return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
         }
 
-
         public static MOTStatusDetails FormatObjectDetails(MOTStatusDetails details)
         {
             details.DateOfRegistration = FormatDate(details.DateOfRegistration);
@@ -284,6 +276,8 @@ namespace AdminApp.Controllers
             ViewBag.CSVFileNullError = false;
             ViewBag.CSVFileFormatError = false;
             ViewBag.FileUploadSuccess = false;
+            ViewBag.RecordUploadCount = 0;
+            ViewBag.RegistrationError = false;
             return View();
         }
 
@@ -314,21 +308,32 @@ namespace AdminApp.Controllers
                 {
                     using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
-                       var records = csvReader.GetRecords<MOTStatusDetails>().ToList();
-                       var recordErrors = CSVIsFormattedCorrectly(records);
-                       csvReader.Dispose();
-                    
-                        if(recordErrors == true)
+                        try
                         {
-                            ViewBag.CSVFileFormatError = true;
-                            System.IO.File.Delete(filePath);
-                            return View();
-                        }
+                            var records = csvReader.GetRecords<MOTStatusDetails>().ToList();
+                            var recordErrors = CSVIsFormattedCorrectly(records);
+                            csvReader.Dispose();
 
-                        foreach (var record in records)
+                            if (recordErrors == true)
+                            {
+                                System.IO.File.Delete(filePath);
+                                return View();
+                            }
+
+                            foreach (var record in records)
+                            {
+                                var formatedDetailsObject = FormatObjectDetails(record);
+                                _statusDetailsRepository.Add(formatedDetailsObject);
+                            }
+                            ViewBag.RecordUploadCount = records.Count();
+                        }  
+                        catch (Exception ex)
                         {
-                            var formatedDetailsObject = FormatObjectDetails(record);
-                            _statusDetailsRepository.Add(formatedDetailsObject);
+                            csvReader.Dispose();
+                            System.IO.File.Delete(filePath);
+                            ViewBag.CSVFileFormatError = true;
+                          
+                            return View();
                         }
                     }
                 }
@@ -341,6 +346,7 @@ namespace AdminApp.Controllers
                 return View();
             }
 
+            
             ViewBag.FileUploadSuccess = true;
             return View();
         }
@@ -348,10 +354,23 @@ namespace AdminApp.Controllers
         public bool CSVIsFormattedCorrectly(List<MOTStatusDetails> records)
         {
             bool fileErrorFound = false;
+            List<string> registrationNumbers = new List<string>();
 
-            foreach(var record in records)
+            foreach (var record in records)
             {
-                if (String.IsNullOrEmpty(record.Make) ||
+                registrationNumbers.Add(record.RegistrationNumber);
+
+                var dateOfRegistrationresult = Regex.IsMatch(record.DateOfRegistration, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
+                var dateOfLastMOTresult = Regex.IsMatch(record.DateOfLastMOT, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
+                var dateOfLastV5Cresult = Regex.IsMatch(record.DateOfLastV5C, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
+                var regExIsValid = Regex.IsMatch(record.RegistrationNumber, @"^(?=.{1,7})(([a-zA-Z]?){1,3}(\d){1,4}([a-zA-Z]?){1,3})$");
+
+                if (record.Id != 0 ||
+                    !regExIsValid ||
+                    !dateOfRegistrationresult ||
+                    !dateOfLastMOTresult ||
+                    !dateOfLastV5Cresult ||
+                    String.IsNullOrEmpty(record.Make) ||
                     String.IsNullOrEmpty(record.CylinderCapacity) ||
                     String.IsNullOrEmpty(record.CO2Emissions) ||
                     String.IsNullOrEmpty(record.FuelType) ||
@@ -360,41 +379,29 @@ namespace AdminApp.Controllers
                     String.IsNullOrEmpty(record.RealDrivingEmissions) ||
                     String.IsNullOrEmpty(record.ExportMarker) ||
                     String.IsNullOrEmpty(record.VehicleColour) ||
-                    String.IsNullOrEmpty(record.VehicleTypeApproval) ||          
+                    String.IsNullOrEmpty(record.VehicleTypeApproval) ||
                     String.IsNullOrEmpty(record.RevenueWeight)
-                    )
+                   )
                 {
-                    fileErrorFound = true;
-                }            
-            }
-
-            foreach(var record in records)
-            {
-             var dateOfRegistrationresult = Regex.IsMatch(record.DateOfRegistration, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
-             var dateOfLastMOTresult = Regex.IsMatch(record.DateOfLastMOT, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
-             var dateOfLastV5Cresult = Regex.IsMatch(record.DateOfLastV5C, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
-             var regExIsValid = Regex.IsMatch(record.RegistrationNumber, @"^(?=.{1,7})(([a-zA-Z]?){1,3}(\d){1,4}([a-zA-Z]?){1,3})$");
-
-                if (record.Id != 0 ||
-                    !regExIsValid ||              
-                    !dateOfRegistrationresult || 
-                    !dateOfLastMOTresult || 
-                    !dateOfLastV5Cresult
-                    )
-                {
+                    ViewBag.CSVFileFormatError = true;
                     fileErrorFound = true;
                 }
-            }
 
-            foreach(var record in records)
-            {
                 var details = _statusDetailsRepository.GetStatusDetails().
-               FirstOrDefault(d => d.RegistrationNumber == record.RegistrationNumber);
+                                FirstOrDefault(d => d.RegistrationNumber == record.RegistrationNumber);
 
-                if ( details != null || record.RegistrationNumber.Length > 7)
+                if (details != null || record.RegistrationNumber.Length > 7)
                 {
+                    ViewBag.RegistrationError = true;
                     fileErrorFound = true;
                 }
+            }
+
+            bool isUnique = registrationNumbers.Distinct().Count() == registrationNumbers.Count();
+            if (!isUnique)
+            {
+                ViewBag.RegistrationError = true;
+                fileErrorFound = true;
             }
 
              return (fileErrorFound);
@@ -405,6 +412,5 @@ namespace AdminApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }
