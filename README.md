@@ -4,8 +4,8 @@ ASP.NET Core | Web API | xUnit | Dependeny Injection | Postman | Azure DevOps
 ## Project Overview
 The MOTStatusApp project is an ASP.NET MVC Web API which replicates the GOV.UK DVLA service for checking vehicle MOT and Tax status. The application includes five internal projects:
 
-* CustomerApp
-* AdminApp
+* CustomerApp - customer facing service.
+* AdminApp - MVC CRUD application which includes a bulk file upload option and schedule task 
 * MOTStatusWebApi
 * SeleniumTests
 * UnitTests
