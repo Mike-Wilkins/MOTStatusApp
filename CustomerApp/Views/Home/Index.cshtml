@@ -1,5 +1,6 @@
 ﻿ 
-@model MOTStatusWebApi.Data.MOTStatusDetails
+@using CustomerApp.ViewModels
+@model MOTCustomerStatusViewData
 
 @{
     ViewData["Title"] = "Home Page";
@@ -19,14 +20,14 @@
 
             <form method="post">
 
-                @if(ViewBag.RegistrationValidationError == false && ViewBag.RegistrationFormatError == false)
+                @if(Model.RegistrationValidationError == false && Model.RegistrationFormatError == false && Model.RegistrationNotFoundError == false)
                 {
                   <div class="mb-3">
                        <h3><strong>Registration number (number plate)</strong></h3>
                        <p style="font-size:20px">For example, CU57ABC or ABC1234</p>
                     <input class="regInput" type="text" name="registration" maxlength="10"/>
                   </div>
-                }else if(ViewBag.RegistrationValidationError == true && ViewBag.RegistrationFormatError == false)
+                }else if(Model.RegistrationValidationError == true && Model.RegistrationFormatError == false)
                 {
                   <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
                        <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
@@ -36,7 +37,7 @@
                         <input class="errorRegInput" type="text" name="registration" maxlength="10" />
                       </div>
                     </div>
-                }else if(ViewBag.RegistrationValidationError == false && ViewBag.RegistrationFormatError == true)
+                }else if(Model.RegistrationValidationError == false && Model.RegistrationFormatError == true)
                 {
                     <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
                        <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
@@ -46,7 +47,7 @@
                         <input class="errorRegInput" type="text" name="registration" maxlength="10" />
                       </div>
                     </div>
-                }else if(ViewBag.RegistrationNotFoundError = true)
+                }else if(Model.RegistrationNotFoundError = true)
                 {
                     <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
                        <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>

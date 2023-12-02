@@ -1,4 +1,6 @@
 
+using AdminApp.Interfaces;
+using AdminApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using MOTStatusWebApi.Data;
 using MOTStatusWebApi.Interfaces;
@@ -7,7 +9,7 @@ using MOTStatusWebApi.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddScoped<IMOTStatusViewData, MOTStatusViewData>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IMOTStatusDetailsRepository, MOTStatusDetailsRepository>();
 builder.Services.AddDbContext<DataContext>(options =>

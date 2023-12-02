@@ -1,9 +1,10 @@
-﻿using AdminApp.Models;
+﻿
+using AdminApp.Interfaces;
+using AdminApp.ViewModels;
 using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using MOTStatusWebApi.Data;
 using MOTStatusWebApi.Interfaces;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -15,32 +16,28 @@ namespace AdminApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMOTStatusDetailsRepository _statusDetailsRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IMOTStatusViewData _viewData;
 
-        public HomeController(ILogger<HomeController> logger, IMOTStatusDetailsRepository statusDetailsRepository, IHostingEnvironment hostingEnvironment)
+        public HomeController(ILogger<HomeController> logger, IMOTStatusDetailsRepository statusDetailsRepository, IHostingEnvironment hostingEnvironment, IMOTStatusViewData viewData)
         {
             _logger = logger;
             _statusDetailsRepository = statusDetailsRepository;
             _hostingEnvironment = hostingEnvironment;
+            _viewData = viewData;
+           
         }
         public IActionResult Index()
-        {
-
-            ViewBag.RegistrationValidationError = false;
-            ViewBag.RegistrationFormatError = false;
-            ViewBag.RegistrationNotFoundError = false;
-           
-            return View();
+        {               
+            return View(_viewData);
         }
 
         [HttpPost]
         public IActionResult Index(string registration)
-        {
-            
+        {      
             if(registration == null)
             {
-               ViewBag.RegistrationValidationError = true;
-               ViewBag.RegistrationFormatError = false;
-                return View();
+                _viewData.RegistrationValidationError = true;
+                return View(_viewData);
             }
 
             registration = registration.ToUpper().Replace(" ", "");
@@ -49,9 +46,8 @@ namespace AdminApp.Controllers
             
             if(!regexValidation)
             {
-                ViewBag.RegistrationValidationError = false;
-                ViewBag.RegistrationFormatError = true;
-                return View();
+                _viewData.RegistrationFormatError = true;
+                return View(_viewData);
             }
 
             var details = _statusDetailsRepository.GetStatusDetails().
@@ -59,8 +55,10 @@ namespace AdminApp.Controllers
 
             if (details == null)
             {
-                ViewBag.RegistrationNotFoundError = true;
-                return View();
+                _viewData.RegistrationFormatError = true;
+                _viewData.RegistrationValidationError = true;
+                _viewData.RegistrationNotFoundError = true;
+                return View(_viewData);
             }
 
             return RedirectToAction("Menu", new {registration = registration});
@@ -94,32 +92,28 @@ namespace AdminApp.Controllers
             var details = _statusDetailsRepository.GetStatusDetails().
               Where(d => d.Id == Id).FirstOrDefault();
 
-            string formatReg = FormatReg(details.RegistrationNumber);
-            ViewBag.FormatReg = formatReg;
+            _viewData.mOTStatusDetails = details;
 
-            ViewBag.VehicleDeleted = false;
+            string formatReg = FormatReg(_viewData.mOTStatusDetails.RegistrationNumber);
+            _viewData.FormatReg = formatReg;
 
-            details = FormatDatePicker(details);
-
-            return View(details);
+            return View(_viewData);
         }
 
         [HttpPost]
         [ActionName("Delete")]
         public IActionResult DeleteVehicle(int Id)
         {
-
             var details = _statusDetailsRepository.GetStatusDetails().
                 Where(d => d.Id == Id).FirstOrDefault();
 
             _statusDetailsRepository.Delete(details);
 
             string formatReg = FormatReg(details.RegistrationNumber);
-            ViewBag.FormatReg = formatReg;
+            _viewData.FormatReg = formatReg;
+            _viewData.VehicleDeleted = true;
 
-            ViewBag.VehicleDeleted = true;
-
-            return View(details);
+            return View(_viewData);
         }
 
         public IActionResult Update(int Id)
@@ -153,7 +147,6 @@ namespace AdminApp.Controllers
 
         public IActionResult Create()
         {
-            ViewBag.RegistrationFormatError = false;
             ViewBag.RegIsUnique = true;
             return View();
         }
@@ -181,7 +174,6 @@ namespace AdminApp.Controllers
             }
 
             details = FormatObjectDetails(details);
-
             _statusDetailsRepository.Add(details);
 
             return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
@@ -238,7 +230,6 @@ namespace AdminApp.Controllers
             {
                 return false;
             }
-
             return (true);
         }
 
@@ -272,13 +263,7 @@ namespace AdminApp.Controllers
 
         public IActionResult UploadCSV()
         {
-            ViewBag.IncorrectFileType = false;
-            ViewBag.CSVFileNullError = false;
-            ViewBag.CSVFileFormatError = false;
-            ViewBag.FileUploadSuccess = false;
-            ViewBag.RecordUploadCount = 0;
-            ViewBag.RegistrationError = false;
-            return View();
+            return View(_viewData);
         }
 
         [HttpPost]
@@ -291,8 +276,8 @@ namespace AdminApp.Controllers
             {
                 if (file.ContentType != "text/csv")
                 {
-                    ViewBag.IncorrectFileType = true;
-                    return View();
+                    _viewData.IncorrectFileType = true;
+                    return View(_viewData);
                 }
 
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "csvfiles");
@@ -311,13 +296,13 @@ namespace AdminApp.Controllers
                         try
                         {
                             var records = csvReader.GetRecords<MOTStatusDetails>().ToList();
-                            var recordErrors = CSVIsFormattedCorrectly(records);
+                           var recordErrors = CSVIsFormattedCorrectly(records);
                             csvReader.Dispose();
 
-                            if (recordErrors == true)
+                            if (recordErrors.FileErrorFound == true)
                             {
                                 System.IO.File.Delete(filePath);
-                                return View();
+                                return View(_viewData);
                             }
 
                             foreach (var record in records)
@@ -325,15 +310,15 @@ namespace AdminApp.Controllers
                                 var formatedDetailsObject = FormatObjectDetails(record);
                                 _statusDetailsRepository.Add(formatedDetailsObject);
                             }
-                            ViewBag.RecordUploadCount = records.Count();
+                            _viewData.RecordUploadCount = records.Count();
                         }  
                         catch (Exception ex)
                         {
                             csvReader.Dispose();
                             System.IO.File.Delete(filePath);
-                            ViewBag.CSVFileFormatError = true;
+                            _viewData.CSVFileFormatError = true;
                           
-                            return View();
+                            return View(_viewData);
                         }
                     }
                 }
@@ -342,18 +327,18 @@ namespace AdminApp.Controllers
             }
             else
             {
-                ViewBag.CSVFileNullError = true;
-                return View();
+                _viewData.CSVFileNullError = true;
+                return View(_viewData);
             }
 
             
-            ViewBag.FileUploadSuccess = true;
-            return View();
+            _viewData.FileUploadSuccess = true;
+            return View(_viewData);
         }
 
-        public bool CSVIsFormattedCorrectly(List<MOTStatusDetails> records)
+        public MOTStatusViewData CSVIsFormattedCorrectly(List<MOTStatusDetails> records)
         {
-            bool fileErrorFound = false;
+            //bool fileErrorFound = false;
             List<string> registrationNumbers = new List<string>();
 
             foreach (var record in records)
@@ -383,8 +368,8 @@ namespace AdminApp.Controllers
                     String.IsNullOrEmpty(record.RevenueWeight)
                    )
                 {
-                    ViewBag.CSVFileFormatError = true;
-                    fileErrorFound = true;
+                    _viewData.CSVFileFormatError = true;
+                    _viewData.FileErrorFound = true;
                 }
 
                 var details = _statusDetailsRepository.GetStatusDetails().
@@ -392,25 +377,25 @@ namespace AdminApp.Controllers
 
                 if (details != null || record.RegistrationNumber.Length > 7)
                 {
-                    ViewBag.RegistrationError = true;
-                    fileErrorFound = true;
+                    _viewData.RegistrationError = true;
+                   _viewData.FileErrorFound = true;
                 }
             }
 
             bool isUnique = registrationNumbers.Distinct().Count() == registrationNumbers.Count();
             if (!isUnique)
             {
-                ViewBag.RegistrationError = true;
-                fileErrorFound = true;
+                _viewData.RegistrationError = true;
+                _viewData.FileErrorFound = true;
             }
 
-             return (fileErrorFound);
+             return ((MOTStatusViewData)_viewData);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }

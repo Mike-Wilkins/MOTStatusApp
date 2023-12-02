@@ -1,5 +1,7 @@
-﻿ 
-@model MOTStatusWebApi.Data.MOTStatusDetails
+﻿
+
+@using AdminApp.ViewModels;
+@model MOTStatusViewData
 
 @{
     ViewData["Title"] = "Home Page";
@@ -16,16 +18,15 @@
             <h1><strong>Enter the registration of the</strong></h1>
             <h1><strong>vehicle</strong></h1><br />
 
-            <form method="post">
-
-                @if(ViewBag.RegistrationValidationError == false && ViewBag.RegistrationFormatError == false)
+            <form method="post"> 
+                @if(@Model.RegistrationValidationError == false && @Model.RegistrationFormatError == false)
                 {
                   <div class="mb-3">
                        <h3><strong>Registration number (number plate)</strong></h3>
                        <p style="font-size:20px">For example, CU57ABC or ABC1234</p>
                     <input class="regInput" type="text" name="registration" maxlength="7"/>
                   </div>
-                }else if(ViewBag.RegistrationValidationError == true && ViewBag.RegistrationFormatError == false)
+                }else if(@Model.RegistrationValidationError == true && @Model.RegistrationFormatError == false)
                 {
                   <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
                        <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
@@ -35,7 +36,7 @@
                         <input class="errorRegInput" type="text" name="registration" maxlength="7" />
                       </div>
                     </div>
-                }else if(ViewBag.RegistrationValidationError == false && ViewBag.RegistrationFormatError == true)
+                }else if(@Model.RegistrationValidationError == false && @Model.RegistrationFormatError == true)
                 {
                     <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
                        <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
@@ -45,7 +46,7 @@
                         <input class="errorRegInput" type="text" name="registration" maxlength="7" />
                       </div>
                     </div>
-                }else if(ViewBag.RegistrationNotFoundError = true)
+                }else if(@Model.RegistrationNotFoundError == true && @Model.RegistrationValidationError == true && @Model.RegistrationFormatError == true)
                 {
                     <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
                        <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>

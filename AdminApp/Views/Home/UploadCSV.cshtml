@@ -1,5 +1,7 @@
 ﻿
+@using AdminApp.ViewModels;
 
+@model MOTStatusViewData
 
 <div class="container" style="margin-top:60px;">
     <div class="mb-3 mt-3">
@@ -22,13 +24,13 @@
             <div class="col-5">
                 <form method="post" enctype="multipart/form-data">
 
-                    @if(ViewBag.IncorrectFileType == false && ViewBag.CSVFileNullError == false && ViewBag.CSVFileFormatError == false && ViewBag.FileUploadSuccess == false)
+                    @if(@Model.IncorrectFileType == false && Model.CSVFileNullError == false && Model.CSVFileFormatError == false && Model.FileUploadSuccess == false && Model.RegistrationError == false)
                     {
                          <div class="md-3">
                             <label class="form-label">Upload File</label>
                             <input style="outline: 1px solid black;" type="file" name="file" class="form-control" />
                         </div>                   
-                    }else if(ViewBag.CSVFileNullError == true)
+                    }else if(Model.CSVFileNullError == true)
                     {
                         <div class="md-3">
                             <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
@@ -37,7 +39,7 @@
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
                         </div>                   
-                    }else if(ViewBag.IncorrectFileType == true)
+                    }else if(@Model.IncorrectFileType == true)
                     {
                          <div class="md-3">
                             <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
@@ -46,7 +48,7 @@
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
                         </div>                   
-                    }else if(ViewBag.CSVFileFormatError == true)
+                    }else if(Model.CSVFileFormatError == true)
                     {
                          <div class="md-3">
                             <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
@@ -55,7 +57,7 @@
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
                         </div>               
-                    }else if(ViewBag.RegistrationError == true)
+                    }else if(Model.RegistrationError == true)
                     {
                         <div class="md-3">
                             <div style="border-left-style: solid; border-left-color: red; border-width: 5px">                           
@@ -64,11 +66,11 @@
                             <label class="form-label">Upload File</label>
                             <input style="outline: 2px solid red;" type="file" name="file" class="form-control" />
                         </div>               
-                    }else if(ViewBag.FileUploadSuccess == true)
+                    }else if(Model.FileUploadSuccess == true)
                     {
                         <div class="md-3">
                             <div style="border-left-style: solid; border-left-color: green; border-width: 5px">                           
-                              <h4 style="color:green; margin-left:10px"><strong>@ViewBag.RecordUploadCount files uploaded successfully.</strong></h4>                         
+                              <h4 style="color:green; margin-left:10px"><strong>@Model.RecordUploadCount files uploaded successfully.</strong></h4>                         
                             </div> 
                             <label class="form-label">Upload File</label>
                             <input type="file" name="file" class="form-control" />

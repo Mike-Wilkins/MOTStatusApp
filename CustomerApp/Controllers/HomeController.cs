@@ -1,8 +1,8 @@
-﻿using CustomerApp.Models;
+﻿using CustomerApp.Interfaces;
+using CustomerApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using MOTStatusWebApi.Data;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -11,20 +11,19 @@ namespace CustomerApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMOTCustomerStatusViewData _viewData;
 
         HttpClient client = new HttpClient();
         string url = "https://localhost:7132/api/MOTStatusDetails/11/registration?registration=";
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IMOTCustomerStatusViewData viewData)
         {
             _logger = logger;
+            _viewData = viewData;
         }
 
         public IActionResult Index()
         {
-            ViewBag.RegistrationValidationError = false;
-            ViewBag.RegistrationFormatError = false;
-            ViewBag.RegistrationNotFoundError = false;
-            return View(); 
+            return View(_viewData); 
         }
 
         [HttpPost]
@@ -32,9 +31,8 @@ namespace CustomerApp.Controllers
         {
             if (registration == null)
             {
-                ViewBag.RegistrationValidationError = true;
-                ViewBag.RegistrationFormatError = false;
-                return View();
+                _viewData.RegistrationValidationError = true;          
+                return View(_viewData);
             }
 
             registration = registration.Replace(" ", "");
@@ -43,9 +41,8 @@ namespace CustomerApp.Controllers
 
             if (!regexValidation)
             {
-                ViewBag.RegistrationValidationError = false;
-                ViewBag.RegistrationFormatError = true;
-                return View();
+                _viewData.RegistrationFormatError = true;
+                return View(_viewData);
             }
 
             try
@@ -55,8 +52,8 @@ namespace CustomerApp.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.RegistrationNotFoundError = true;
-                return View();
+                _viewData.RegistrationNotFoundError = true;
+                return View(_viewData);
             }        
         }
 
@@ -64,8 +61,8 @@ namespace CustomerApp.Controllers
         {
             string formatReg = FormatReg(carDetails.RegistrationNumber);
             carDetails.RegistrationNumber = formatReg;
-            ViewBag.ConfirmNotSelectedError = false;
-            return View(carDetails);
+            _viewData.mOTStatusDetails = carDetails;
+            return View(_viewData);
         }
 
         [HttpPost]
@@ -75,8 +72,9 @@ namespace CustomerApp.Controllers
             {
                 string formatReg = FormatReg(detail.RegistrationNumber);
                 detail.RegistrationNumber = formatReg;
-                ViewBag.ConfirmNotSelectedError = true;
-                return View(detail);
+                _viewData.mOTStatusDetails = detail;
+                _viewData.ConfirmNotSelectedError = true;
+                return View(_viewData);
             }
 
             if(confirm == "Yes")
@@ -93,7 +91,6 @@ namespace CustomerApp.Controllers
         {
             string formatReg = FormatReg(detail.RegistrationNumber);
             detail.RegistrationNumber = formatReg;
-
             detail.DateOfRegistration = FormatDate(detail.DateOfRegistration);
             detail.DateOfLastMOT = FormatDate(detail.DateOfLastMOT);
             detail.DateOfLastV5C = FormatDate(detail.DateOfLastV5C);
@@ -117,14 +114,12 @@ namespace CustomerApp.Controllers
             return result;
         }
 
-
         private bool VehicleRegEx(string registration)
         {
             var regExIsValid = Regex.IsMatch(registration, @"^(?=.{1,7})(([a-zA-Z]?){1,3}(\d){1,4}([a-zA-Z]?){1,3})$");
 
             return regExIsValid;
         }
-
 
         public IActionResult Privacy()
         {

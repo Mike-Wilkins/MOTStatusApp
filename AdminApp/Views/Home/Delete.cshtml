@@ -1,24 +1,21 @@
-﻿@model MOTStatusWebApi.Data.MOTStatusDetails
+﻿
+@using AdminApp.ViewModels;
+@model MOTStatusViewData
 
 <head>
     <link href="~/css/Delete.css" rel="stylesheet" type="text/css"/>
 </head>
 
-
-
-
-    @if(@ViewBag.VehicleDeleted == true)
+    @if(@Model.VehicleDeleted == true)
     {
         <div style="margin-top:50px;">
-              <h4 id="vehicleDetailsDeletedConfirmation">Vehicle @Model.RegistrationNumber has been removed from DVLA records</h4>
+              <h4 id="vehicleDetailsDeletedConfirmation">Vehicle @Model.FormatReg has been removed from DVLA records</h4>
         </div>
       
          <a asp-action="Index" class="btn btn-success" style="margin-left:480px; width:250px;">Return to GOV.UK</a>
     }else{
 
-    
-
-    <h3 style="text-align:center; background: #ff9999; height:60px; padding-top:10px; width:830px; margin-left:210px;">Are you sure you want to delete vehicle details for @ViewBag.FormatReg ?</h3>
+    <h3 style="text-align:center; background: #ff9999; height:60px; padding-top:10px; width:830px; margin-left:210px;">Are you sure you want to delete vehicle details for @Model.FormatReg ?</h3>
 
         <form asp-action="Delete">
              
@@ -42,38 +39,38 @@
                     <table>
                         <tr>
                             <td class="attribute">Vehicle make</td>
-                            <td>@Model.Make</td>
+                            <td>@Model.mOTStatusDetails.Make</td>
                         </tr>
                         <tr>
                             <td class="attribute">Date of first registration</td>
-                            <td>@Model.DateOfRegistration</td>
+                            <td>@Model.mOTStatusDetails.DateOfRegistration</td>
                         </tr>
                         <tr>
                             <td class="attribute">Cylinder Capacity</td>
-                            <td>@Model.CylinderCapacity</td>
+                            <td>@Model.mOTStatusDetails.CylinderCapacity</td>
                         </tr>
                          <tr>
                             <td class="attribute">CO2 Emissions</td>
-                            <td>@Model.CO2Emissions</td>
+                            <td>@Model.mOTStatusDetails.CO2Emissions</td>
                         </tr>
                          <tr>
                             <td class="attribute">Fuel Type</td>
-                            <td>@Model.FuelType</td>
+                            <td>@Model.mOTStatusDetails.FuelType</td>
                         </tr> <tr>
                             <td class="attribute">Euro status</td>
-                            <td>@Model.EuroStatus</td>
+                            <td>@Model.mOTStatusDetails.EuroStatus</td>
                         </tr>
                          <tr>
                             <td class="attribute">Real driving emissions (RDE)</td>
-                            <td>@Model.RealDrivingEmissions</td>
+                            <td>@Model.mOTStatusDetails.RealDrivingEmissions</td>
                         </tr>
                          <tr>
                             <td class="attribute">Export marker</td>
-                            <td>@Model.ExportMarker</td>
+                            <td>@Model.mOTStatusDetails.ExportMarker</td>
                         </tr>
                          <tr>
                             <td class="attribute">Vehicle Status</td>
-                            <td>@Model.VehicleStatus</td>
+                            <td>@Model.mOTStatusDetails.VehicleStatus</td>
                         </tr>
                     </table>
                 </div>
@@ -81,35 +78,35 @@
                     <table>
                          <tr>
                             <td class="attribute">Vehicle Colour</td>
-                            <td>@Model.VehicleColour</td>
+                            <td>@Model.mOTStatusDetails.VehicleColour</td>
                         </tr>
                          <tr>
                             <td class="attribute">Vehicle type approval</td>
-                            <td>@Model.VehicleTypeApproval</td>
+                            <td>@Model.mOTStatusDetails.VehicleTypeApproval</td>
                         </tr>
                          <tr>
                             <td class="attribute">Wheel plan</td>
-                            <td>@Model.WheelPlan</td>
+                            <td>@Model.mOTStatusDetails.WheelPlan</td>
                         </tr>
                          <tr>
                             <td class="attribute">Revenue weight</td>
-                            <td>@Model.RevenueWeight</td>
+                            <td>@Model.mOTStatusDetails.RevenueWeight</td>
                         </tr>
                          <tr>
                             <td class="attribute">Date of last V5C</td>
-                            <td>@Model.DateOfLastV5C</td>
+                            <td>@Model.mOTStatusDetails.DateOfLastV5C</td>
                         </tr>
                          <tr>
                             <td class="attribute">Tax due date</td>
-                            <td>@Model.TaxDueDate</td>
+                            <td>@Model.mOTStatusDetails.TaxDueDate</td>
                         </tr>
                          <tr>
                             <td class="attribute">Date of last MOT</td>
-                            <td>@Model.DateOfLastMOT</td>
+                            <td>@Model.mOTStatusDetails.DateOfLastMOT</td>
                         </tr>
                          <tr>
                             <td class="attribute">MOT due date</td>
-                            <td>@Model.MOTDueDate</td>
+                            <td>@Model.mOTStatusDetails.MOTDueDate</td>
                         </tr>
                     </table>
                 </div>

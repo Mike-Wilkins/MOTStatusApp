@@ -1,4 +1,8 @@
-﻿@model MOTStatusWebApi.Data.MOTStatusDetails
+﻿@*@model MOTStatusWebApi.Data.MOTStatusDetails
+*@
+
+@using CustomerApp.ViewModels
+@model MOTCustomerStatusViewData
 
 <head>
     <link href="~/css/DetailConfirmation.css" rel="stylesheet" type="text/css"/>
@@ -14,17 +18,17 @@
                    <td class="attribute">Registration number</td>
                    <td>
                        <div id="regPlate">
-                            <h4>@Model.RegistrationNumber</h4>   
+                            <h4>@Model.mOTStatusDetails.RegistrationNumber</h4>   
                        </div>
                    </td>
                 </tr>
                 <tr>
                     <td class="attribute">Make</td>
-                    <td>@Model.Make</td>
+                    <td>@Model.mOTStatusDetails.Make</td>
                 </tr>
                 <tr>
                     <td class="attribute">Colour</td>
-                    <td>@Model.VehicleColour</td>
+                    <td>@Model.mOTStatusDetails.VehicleColour</td>
                 </tr>
             </table>
         </div>
@@ -34,7 +38,7 @@
 
 <form method="post">
 
-    @if(ViewBag.ConfirmNotSelectedError == false)
+    @if(Model.ConfirmNotSelectedError == false)
     {
      <div class="container p-3 mt-0 bg-body-secondary">
          <div class="row pt-0">
@@ -48,7 +52,7 @@
                <div class="col-4"></div>       
          </div>        
     </div>
-    }else if(ViewBag.ConfirmNotSelectedError == true)
+    }else if(Model.ConfirmNotSelectedError == true)
     {
         <div class="container p-3 mt-0 bg-body-secondary">
          <div class="row pt-0">
