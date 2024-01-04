@@ -63,7 +63,7 @@ namespace MOTStatusWebApi.Controllers
             //Vehicles LESS than 3 years old do not require MOT
             if (DateTime.Now <= registrastionDate.AddYears(3))
             {
-                details.MOTDueDate = registrastionDate.AddYears(3).ToString();
+                details.MOTDueDate = registrastionDate.AddYears(3).ToString("dd/MM/yyyy");
                 details.DateOfLastMOT = details.DateOfRegistration;
             }
 

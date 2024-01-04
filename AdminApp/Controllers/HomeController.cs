@@ -371,6 +371,17 @@ namespace AdminApp.Controllers
 
             foreach (var record in records)
             {
+                if (record.DateOfLastMOT == "NULL")
+                {
+                    record.DateOfLastMOT = record.DateOfRegistration;
+                }
+
+                if (record.MOTDueDate == "NULL")
+                {
+                    DateTime registrastionDate = DateTime.Parse(record.DateOfRegistration);
+                    record.MOTDueDate = registrastionDate.AddYears(3).ToString("dd/MM/yyyy");
+                }
+
                 registrationNumbers.Add(record.RegistrationNumber);
 
                 var dateOfRegistrationresult = Regex.IsMatch(record.DateOfRegistration, @"^(?<day>\d\d?)/(?<month>\d\d?)/(?<year>\d\d\d\d)$");
