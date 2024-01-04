@@ -19,7 +19,7 @@ namespace MOTStatusWebApi.Controllers
                         trigger
                             .ForJob(jobKey)
                             .WithSimpleSchedule(schedule =>
-                                schedule.WithIntervalInSeconds(60).RepeatForever()));
+                                schedule.WithIntervalInSeconds(180).RepeatForever()));
 
 
             });

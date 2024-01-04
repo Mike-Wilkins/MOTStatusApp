@@ -103,5 +103,12 @@ namespace MOTStatusWebApi.Data
         [Required(ErrorMessage = "Date of last MOT is required")]
         public string? DateOfLastMOT { get; set; }
 
+        [Required(ErrorMessage = "Model is required")]
+        public string? Model { get; set; }
+
+        [Display(Name ="Vehicle ID")]
+        [Required(ErrorMessage = "Vehicle ID is required")]
+        public string? VehicleID { get; set; }
+
     }
 }

@@ -30,9 +30,19 @@
                             }
                         </div>
                         <div class="mb-3">
+                            <label asp-for="VehicleID" class="attribute"></label>
+                            <input asp-for="VehicleID" class="form-control"/>
+                            <span asp-validation-for="VehicleID" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
                             <label asp-for="Make" class="attribute"></label>
                             <input asp-for="Make" class="form-control"/>
                             <span asp-validation-for="Make" class="text-danger"></span>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="Model" class="attribute"></label>
+                            <input asp-for="Model" class="form-control"/>
+                            <span asp-validation-for="Model" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="DateOfRegistration" class="attribute"></label>
@@ -49,6 +59,9 @@
                             <input asp-for="CO2Emissions" class="form-control"/>
                             <span asp-validation-for="CO2Emissions" class="text-danger"></span>
                         </div>
+                                
+                    </div>
+                    <div class="col-4">
                         <div class="form-group mb-3">
                             <label asp-for="FuelType" class="attribute"></label>
                                 <select asp-for="FuelType" class="form-select">
@@ -57,9 +70,7 @@
                                     <option value="ELECTRIC">ELECTRIC</option>
                                     <option value="HYBRID">HYBRID</option>
                                 </select>
-                        </div>                  
-                    </div>
-                    <div class="col-4">
+                        </div>          
                         <div class="mb-3">
                             <label asp-for="EuroStatus" class="attribute"></label>
                             <input asp-for="EuroStatus" class="form-control"/>
@@ -112,7 +123,7 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="DateOfLastMOT" class="attribute"></label>
-                            <input asp-for="DateOfLastMOT" class="form-control" placeholder="DD/MM/YYYY" type="date"/>
+                            <input asp-for="DateOfLastMOT" class="form-control" disabled="disabled"/>
                             <span asp-validation-for="DateOfLastMOT" class="text-danger"></span>
                         </div>
                         <div class="mb-3">

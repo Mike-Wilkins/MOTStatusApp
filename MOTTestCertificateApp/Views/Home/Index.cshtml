@@ -1,0 +1,80 @@
+﻿@using MOTTestCertificateApp.ViewModels;
+@model MOTTestCertificateViewData
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<head>
+    <link href="~/css/Index.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<div class="container bg-body-secondary">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <a class="text-info"><img src="/images/vosa_logo.png" alt="images" style="width:280px; height:90px;"></a>
+        </div>
+    </div>
+</div>
+
+<div class="container p-3 mt-4 bg-body-secondary">
+    <div class="row pt-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h1><strong>Enter the registration of the</strong></h1>
+            <h1><strong>vehicle</strong></h1><br />
+
+            <form method="post"> 
+                @if(@Model.RegistrationValidationError == false && @Model.RegistrationFormatError == false)
+                {
+                  <div class="mb-3">
+                       <h3><strong>Registration number (number plate)</strong></h3>
+                       <p style="font-size:20px">For example, CU57ABC or ABC1234</p>
+                    <input class="regInput" type="text" name="registration" maxlength="7"/>
+                  </div>
+                }else if(@Model.RegistrationValidationError == true && @Model.RegistrationFormatError == false)
+                {
+                  <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
+                       <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
+                       <p style="font-size:20px; margin-left:10px">For example, CU57ABC or ABC1234</p>
+                       <h4 style="color:red; margin-left:10px"><strong>Provide the vehicle registration</strong></h4>  
+                      <div class="mb-3">
+                        <input class="errorRegInput" type="text" name="registration" maxlength="7" />
+                      </div>
+                    </div>
+                }else if(@Model.RegistrationValidationError == false && @Model.RegistrationFormatError == true)
+                {
+                    <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
+                       <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
+                       <p style="font-size:20px; margin-left:10px">For example, CU57ABC or ABC1234</p>
+                       <h4 style="color:red; margin-left:10px"><strong>Provide a valid vehicle registration</strong></h4>  
+                      <div class="mb-3">
+                        <input class="errorRegInput" type="text" name="registration" maxlength="7" />
+                      </div>
+                    </div>
+                }else if(@Model.RegistrationNotFoundError == true && @Model.RegistrationValidationError == true && @Model.RegistrationFormatError == true)
+                {
+                    <div style="border-left-style: solid; border-left-color: red; border-width: 5px">
+                       <h3 style="margin-left:10px"><strong>Registration number (number plate)</strong></h3>
+                       <p style="font-size:20px; margin-left:10px">For example, CU57ABC or ABC1234</p>
+                       <h4 style="color:red; margin-left:10px"><strong>Vehicle registration was not found</strong></h4>  
+                      <div class="mb-3">
+                        <input class="errorRegInput" type="text" name="registration" maxlength="7" />
+                      </div>
+                    </div>
+                }
+
+                <br />
+               <button class="button" id="buttonactive" type="submit">Continue</button>
+               
+            </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+<script>
+
+ 
+</script>

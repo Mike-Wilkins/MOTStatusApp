@@ -1,0 +1,135 @@
+﻿@model MOTStatusWebApi.Models.MOTTestCertificateDetails
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<head>
+    <link href="~/css/Create.css" rel="stylesheet" type="text/css"/>
+</head>
+
+
+ @*<a class="text-info"><img src="/images/vosa_logo.png" alt="images" style="width:280px; height:90px; position: absolute;top: 90px;right: 50px;"/></a*@
+
+<a class="text-info"><img src="/images/vosa_logo.png" alt="images" style="width:280px; height:90px;"></a>
+
+ <form asp-action="Create">
+      <div class="border p-3 mt-4 bg-body-secondary"> 
+          <div class="container">
+              <div class="row pb-2">
+                  <div class="col-6">
+                    <h4>Create Vehicle Details</h4>
+                </div>
+                <div class="col-6" style="text-align:right">
+                    <button type="submit" class="btn btn-success" style="width:250px;">Create MOT Certificate</button>
+                </div>
+              </div>
+          </div>
+
+           <div class="container p-3">
+                <div class="row pt-0">
+                    <div class="col-4" style="background:#339966;">
+                        <div class="mb-3" style="margin-top:20px;">
+                            <label asp-for="MOTTestNumber" class="attribute"></label>
+                            <input asp-for="MOTTestNumber" class="form-control" type="text" value="@Model.MOTTestNumber" readonly="readonly"/>
+                           
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Make" class="attribute"></label>
+                            <input asp-for="Make" class="form-control" type="text" value="@Model.Make" readonly="readonly"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="OdometerReading" class="attribute"></label>
+                            <input asp-for="OdometerReading" class="form-control"/>
+                            <span asp-validation-for="OdometerReading"></span>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="RegistrationNumber" class="attribute"></label>
+                            <input asp-for="RegistrationNumber" class="form-control" type="text" value="@Model.RegistrationNumber" readonly="readonly"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="Model" class="attribute"></label>
+                            <input asp-for="Model" class="form-control" type="text" value="@Model.Model" readonly="readonly"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="TestClass" class="attribute"></label>
+                            <input asp-for="TestClass" class="form-control"/>
+                            <span asp-validation-for="TestClass"></span>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="VehicleID" class="attribute"></label>
+                            <input asp-for="VehicleID" class="form-control" type="text" value="@Model.VehicleID" readonly="readonly"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="Colour" class="attribute"></label>
+                            <input asp-for="Colour" class="form-control" type="text" value="@Model.Colour" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="col-4" style="background:#339966;">
+                         <div class="mb-3" style="margin-top:20px;">
+                            <label asp-for="DateOfRegistration" class="attribute"></label>
+                            <input asp-for="DateOfRegistration" class="form-control" type="text" value="@Model.DateOfRegistration" readonly="readonly"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="MOTDueDate" class="attribute"></label>
+                            <input asp-for="MOTDueDate" class="form-control" type="text" value="@Model.MOTDueDate" readonly="readonly"/>
+                        </div>
+                          <div class="mb-3">
+                            <label asp-for="DateOfLastMOT" class="attribute"></label>
+                            <input asp-for="DateOfLastMOT" class="form-control" type="text" value="@Model.DateOfLastMOT" readonly="readonly"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="FuelType" class="attribute"></label>
+                            <input asp-for="FuelType" class="form-control" type="text" value="@Model.FuelType" readonly="readonly"/>
+                        </div>
+                          <div class="mb-3">
+                            <label asp-for="AuthenticationNumber" class="attribute"></label>
+                            <input asp-for="AuthenticationNumber" class="form-control"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="DesignGrossWeight" class="attribute"></label>
+                            <input asp-for="DesignGrossWeight" class="form-control"/>
+                        </div>
+                          <div class="mb-3">
+                            <label asp-for="AdvisoryNoticeIssued" class="attribute"></label>
+                            <input asp-for="AdvisoryNoticeIssued" class="form-control"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="TestStationNumber" class="attribute"></label>
+                            <input asp-for="TestStationNumber" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-4" style="background:#339966;">
+                        <div class="mb-3" style="margin-top:20px;">
+                            <label asp-for="SeatBeltChecked" class="attribute"></label>
+                            <input asp-for="SeatBeltChecked" class="form-control"/>
+                        </div>
+                         <div class="mb-3">
+                            <label asp-for="NumberOfSeatBelts" class="attribute"></label>
+                            <input asp-for="NumberOfSeatBelts" class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PreviousInstallationCheck" class="attribute"></label>
+                            <input asp-for="PreviousInstallationCheck" class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="IssuersName" class="attribute"></label>
+                            <input asp-for="IssuersName" class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="VTSNumber" class="attribute"></label>
+                            <input asp-for="VTSNumber" class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="InspectionAuthority" class="attribute"></label>
+                            <input asp-for="InspectionAuthority" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+           </div>
+
+
+      </div>
+
+ </form>

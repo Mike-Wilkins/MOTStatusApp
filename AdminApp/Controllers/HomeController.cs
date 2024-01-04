@@ -14,16 +14,18 @@ namespace AdminApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMOTTestCertificateDetailsRepository _testDetailsRepository;
         private readonly IMOTStatusDetailsRepository _statusDetailsRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IMOTStatusViewData _viewData;
 
-        public HomeController(ILogger<HomeController> logger, IMOTStatusDetailsRepository statusDetailsRepository, IHostingEnvironment hostingEnvironment, IMOTStatusViewData viewData)
+        public HomeController(ILogger<HomeController> logger, IMOTTestCertificateDetailsRepository testDetailsRepository, IMOTStatusDetailsRepository statusDetailsRepository, IHostingEnvironment hostingEnvironment, IMOTStatusViewData viewData)
         {
             _logger = logger;
             _statusDetailsRepository = statusDetailsRepository;
             _hostingEnvironment = hostingEnvironment;
             _viewData = viewData;
+            _testDetailsRepository = testDetailsRepository;
            
         }
         public IActionResult Index()
@@ -129,9 +131,7 @@ namespace AdminApp.Controllers
         [HttpPost]
         public IActionResult Update(MOTStatusDetails details)
         {
-
-            ModelState.Remove(nameof(details.TaxDueDate));
-            ModelState.Remove(nameof(details.MOTDueDate));
+            ModelState.Remove(nameof(details.VehicleStatus));
 
             if (!ModelState.IsValid)
             {
@@ -156,6 +156,7 @@ namespace AdminApp.Controllers
         {
             ModelState.Remove(nameof(details.TaxDueDate));
             ModelState.Remove(nameof(details.MOTDueDate));
+            ModelState.Remove(nameof(details.DateOfLastMOT));
 
             //details.RegistrationNumber = details.RegistrationNumber.ToUpper().Replace(" ", "");
 
@@ -173,7 +174,38 @@ namespace AdminApp.Controllers
                 return View();
             }
 
+            DateTime registrastionDate = DateTime.Parse(details.DateOfRegistration);
+
+            //Vehicles OLDER than 3 years
+            if(DateTime.Now >= registrastionDate.AddYears(3))
+            {
+                var MOTList = _testDetailsRepository.GetTestCertificateDetails().Where(x => x.VehicleID == details.VehicleID).ToList();
+
+                if (MOTList.Count == 0)
+                {
+                    details.MOTDueDate = registrastionDate.AddYears(3).ToString("dd/MM/yyyy");
+                    details.DateOfLastMOT = details.DateOfRegistration;
+                }
+                else
+                {
+                    var latestMOTCert = MOTList.Max(m => m.MOTTestNumber);
+                    var mOTDueDate = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.MOTTestNumber == latestMOTCert).FirstOrDefault();
+                    details.MOTDueDate = mOTDueDate.MOTDueDate;
+                    details.DateOfLastMOT = mOTDueDate.DateOfLastMOT;
+                }
+
+            }
+
+            //Vehicles LESS than 3 years old do not require MOT
+            if (DateTime.Now <= registrastionDate.AddYears(3))
+            {
+                details.MOTDueDate = registrastionDate.AddYears(3).ToString();
+                details.DateOfLastMOT = details.DateOfRegistration;
+            }
+
             details = FormatObjectDetails(details);
+
+
             _statusDetailsRepository.Add(details);
 
             return RedirectToAction("Menu", new { registration = details.RegistrationNumber });
@@ -181,16 +213,12 @@ namespace AdminApp.Controllers
 
         public static MOTStatusDetails FormatObjectDetails(MOTStatusDetails details)
         {
-            details.DateOfRegistration = FormatDate(details.DateOfRegistration);
+            details.DateOfRegistration = FormatDate(details.DateOfRegistration); 
             details.DateOfLastV5C = FormatDate(details.DateOfLastV5C);
             details.DateOfLastMOT = FormatDate(details.DateOfLastMOT);
-
             details.TaxDueDate = UpdateVehicleDueDate(details.DateOfLastV5C);
-            details.MOTDueDate = UpdateVehicleDueDate(details.DateOfLastMOT);
-
             details.Taxed = IsVehicleTaxedAndMOTed(details.TaxDueDate);
             details.MOTed = IsVehicleTaxedAndMOTed(details.MOTDueDate);
-
             details.VehicleStatus = IsTaxedLabel(details.Taxed);
 
             return (details);
@@ -365,7 +393,9 @@ namespace AdminApp.Controllers
                     String.IsNullOrEmpty(record.ExportMarker) ||
                     String.IsNullOrEmpty(record.VehicleColour) ||
                     String.IsNullOrEmpty(record.VehicleTypeApproval) ||
-                    String.IsNullOrEmpty(record.RevenueWeight)
+                    String.IsNullOrEmpty(record.RevenueWeight) ||
+                    String.IsNullOrEmpty(record.Model) ||
+                    String.IsNullOrEmpty(record.VehicleID)
                    )
                 {
                     _viewData.CSVFileFormatError = true;
