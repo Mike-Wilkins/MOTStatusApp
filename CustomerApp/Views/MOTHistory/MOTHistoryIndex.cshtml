@@ -1,0 +1,13 @@
+﻿
+@using CustomerApp.ViewModels
+@model MOTCustomerStatusViewData
+
+<h5>MOT History</h5>
+
+@foreach(var item in Model.mOTTestCertificateDetails){
+    <h5>
+        @item.DateOfLastMOT
+    </h5> 
+}
+
+<h5>@Model.mOTStatusDetails.Make @Model.mOTStatusDetails.Model</h5>

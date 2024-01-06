@@ -1,9 +1,12 @@
 ﻿using MOTStatusWebApi.Data;
+using MOTStatusWebApi.Models;
 
 namespace CustomerApp.Interfaces
 {
     public interface IMOTCustomerStatusViewData
     {
+        public IEnumerable<MOTTestCertificateDetails> mOTTestCertificateDetails { get; set; }
+        public MOTTestCertificateDetails mOTTestCertificateDetail { get; set; }
         public MOTStatusDetails mOTStatusDetails { get; set; }
         public bool RegistrationValidationError {get; set;}
         public bool RegistrationFormatError {get; set;}

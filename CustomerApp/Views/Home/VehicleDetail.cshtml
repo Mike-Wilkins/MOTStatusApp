@@ -119,11 +119,11 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
                 </tr>
                 <tr>
                     <td class="attribute">Cylinder Capacity</td>
-                    <td>@Model.CylinderCapacity</td>
+                    <td>@Model.CylinderCapacity cc</td>
                 </tr>
                  <tr>
-                    <td class="attribute">CO2 Emissions</td>
-                    <td>@Model.CO2Emissions</td>
+                    <td class="attribute">CO<a style="font-size:10px; font-weight: bold;">2</a> Emissions</td>
+                    <td>@Model.CO2Emissions g/km</td>
                 </tr>
                  <tr>
                     <td class="attribute">Fuel Type</td>
@@ -219,7 +219,7 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
              </div><br /><br />
              <div id="DVLAServices">
                  <h5 style="margin-top:10px;"><strong>DVSA services</strong></h5>
-                 <div id="serviceLink"><a href="">Check the MOT history of a vehicle</a><br /></div>
+                 <div id="serviceLink"> @Html.ActionLink("Check the MOT history of a vehicle","MOTHistoryIndex","MOTHistory", new {vehicleId = @Model.VehicleID})</div>
                  <div id="serviceLink"><a href="">Get MOT reminders</a><br /></div>
                  <div id="serviceLink"><a href="">Report a vehicle with no MOT</a><br /></div>
                  <div id="serviceLink"><a href="">MOTs for vehicles registered in Nothern Ireland</a><br /></div>
