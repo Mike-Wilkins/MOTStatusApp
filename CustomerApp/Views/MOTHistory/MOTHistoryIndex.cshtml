@@ -2,6 +2,58 @@
 @using CustomerApp.ViewModels
 @model MOTCustomerStatusViewData
 
+<head>
+    <link href="~/css/DetailConfirmation.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<div class="container p-1 mt-4 bg-body-secondary">
+    <div class="row pt-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div id="regPlate">
+                 <h4>@Model.mOTStatusDetails.RegistrationNumber</h4>   
+            </div>
+            <p style="font-size:40px; font-weight: bold;">@Model.mOTStatusDetails.Make @Model.mOTStatusDetails.Model</p>
+             <div><a href="">Check another vehicle</a><br /></div>
+        </div>
+    </div>
+</div>
+<div class="container p-1">
+    <div class="row">
+        <div class="col-2"></div>
+         <div class="col-2">
+             <a>Colour</a>
+             <h5 style="font-weight: bold;">@Model.mOTStatusDetails.VehicleColour</h5>
+         </div>
+         <div class="col-2">
+             <a>Fuel type</a>
+             <h5 style="font-weight: bold;">@Model.mOTStatusDetails.FuelType</h5>
+         </div>
+         <div class="col-2">
+             <a>Date registered</a>
+             <h5 style="font-weight: bold;">@Model.mOTStatusDetails.DateOfRegistration</h5>
+         </div>
+    </div>
+</div>
+
+<div class="container p-1">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <a style="font-size:20px;">MOT valid until</a>
+            <h3 style="font-weight: bold;">@Model.mOTStatusDetails.DateOfLastMOT</h3>
+            <p><a href="">Get an MOT reminder</a> by email or text</p>
+            <div id="serviceLink"><a href="">Download test certificates</a><br /></div><br />
+             <p>If you think the MOT expiry date or any of the vehicle details are wrong: <a href="">Contact DVSA</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 <h5>MOT History</h5>
 
 @foreach(var item in Model.mOTTestCertificateDetails){
@@ -10,4 +62,3 @@
     </h5> 
 }
 
-<h5>@Model.mOTStatusDetails.Make @Model.mOTStatusDetails.Model</h5>

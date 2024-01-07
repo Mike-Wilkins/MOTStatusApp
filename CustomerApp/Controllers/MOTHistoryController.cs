@@ -1,9 +1,6 @@
 ﻿using CustomerApp.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using MOTStatusWebApi.Data;
 using MOTStatusWebApi.Interfaces;
-using MOTStatusWebApi.Models;
-using Newtonsoft.Json;
 
 namespace CustomerApp.Controllers
 {
@@ -25,7 +22,21 @@ namespace CustomerApp.Controllers
             _viewData.mOTTestCertificateDetails = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.VehicleID == vehicleId).ToList();
             _viewData.mOTStatusDetails = _statusDetailsRepository.GetStatusDetails().Where(d => d.VehicleID == vehicleId).FirstOrDefault();
 
+
+            _viewData.mOTStatusDetails.DateOfRegistration = FormatDate(_viewData.mOTStatusDetails.DateOfRegistration);
+
+
+            _viewData.mOTStatusDetails.DateOfLastMOT = FormatDate(_viewData.mOTStatusDetails.DateOfLastMOT);
+
             return View(_viewData);
+        }
+
+        private string FormatDate(string detailsDate)
+        {
+            DateTime date = DateTime.Parse(detailsDate);
+            var result = date.ToString("d/MMMM/yyyy").Replace("/", " ");
+
+            return (result);
         }
     }
 }
