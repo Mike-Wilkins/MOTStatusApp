@@ -219,7 +219,7 @@ Layout = "~/Views/Shared/_VehicleDetailLayout.cshtml";
              </div><br /><br />
              <div id="DVLAServices">
                  <h5 style="margin-top:10px;"><strong>DVSA services</strong></h5>
-                 <div id="serviceLink"> @Html.ActionLink("Check the MOT history of a vehicle","MOTHistoryIndex","MOTHistory", new {vehicleId = @Model.VehicleID})</div>
+                 <div id="serviceLink"> @Html.ActionLink("Check the MOT history of a vehicle","MOTHistoryIndex","MOTHistory", new {vehicleId = @Model.VehicleID, dateOfRegistration = @Model.DateOfRegistration, dateOfLastMOT = @Model.DateOfLastMOT})</div>
                  <div id="serviceLink"><a href="">Get MOT reminders</a><br /></div>
                  <div id="serviceLink"><a href="">Report a vehicle with no MOT</a><br /></div>
                  <div id="serviceLink"><a href="">MOTs for vehicles registered in Nothern Ireland</a><br /></div>

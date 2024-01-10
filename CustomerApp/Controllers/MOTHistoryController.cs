@@ -17,16 +17,25 @@ namespace CustomerApp.Controllers
             _statusDetailsRepository = statusDetailsRepository;
         }
 
-        public IActionResult MOTHistoryIndex(string vehicleId)
-        {   
+        public IActionResult MOTHistoryIndex(string vehicleId, string dateOfRegistration, string dateOfLastMOT)
+        {
             _viewData.mOTTestCertificateDetails = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.VehicleID == vehicleId).ToList();
+
             _viewData.mOTStatusDetails = _statusDetailsRepository.GetStatusDetails().Where(d => d.VehicleID == vehicleId).FirstOrDefault();
 
+            _viewData.mOTStatusDetails.DateOfRegistration = dateOfRegistration;
+            _viewData.mOTStatusDetails.DateOfLastMOT = dateOfLastMOT;
 
-            _viewData.mOTStatusDetails.DateOfRegistration = FormatDate(_viewData.mOTStatusDetails.DateOfRegistration);
+            foreach (var item in _viewData.mOTTestCertificateDetails)
+            {
+                item.DateOfLastMOT = FormatDate(item.DateOfLastMOT);
+                item.MOTDueDate = FormatDate(item.MOTDueDate);
+
+                var mileage = Int32.Parse(item.OdometerReading);
+                item.OdometerReading = String.Format("{0:#,##0.##}", mileage);
+            }
 
 
-            _viewData.mOTStatusDetails.DateOfLastMOT = FormatDate(_viewData.mOTStatusDetails.DateOfLastMOT);
 
             return View(_viewData);
         }

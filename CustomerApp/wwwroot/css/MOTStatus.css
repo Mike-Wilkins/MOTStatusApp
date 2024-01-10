@@ -1,0 +1,50 @@
+﻿#regPlate {
+    background: #ffd633;
+    width: 140px;
+    text-align: center;
+    border-radius: 8px;
+    height: 40px;
+    padding-top: 5px;
+    margin-bottom: 7px;
+}
+
+#showMOTStatus {
+    background: none !important;
+    border: none;
+    /*padding: 0 !important;*/
+    font-family: arial, sans-serif;
+    color: #0059b3;
+    /*text-decoration: underline;*/
+    cursor: pointer;
+}
+
+#mOTDetails:hover {
+    background: #f2f2f2;
+}
+
+#showVehicleRecall {
+    background: none !important;
+    border: none;
+    /*padding: 0 !important;*/
+    font-family: arial, sans-serif;
+    color: #0059b3;
+    /*text-decoration: underline;*/
+    cursor: pointer;
+}
+
+#recallDetails:hover {
+    background: #f2f2f2;
+}
+
+
+
+
+/*
+    #showMOTStatus:hover:before {
+        content: "Text changed!";
+        
+    }
+
+#showMOTStatus:hover span {
+    display: none;
+}*/

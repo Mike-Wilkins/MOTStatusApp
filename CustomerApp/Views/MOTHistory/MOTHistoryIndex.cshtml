@@ -3,7 +3,7 @@
 @model MOTCustomerStatusViewData
 
 <head>
-    <link href="~/css/DetailConfirmation.css" rel="stylesheet" type="text/css"/>
+    <link href="~/css/MOTStatus.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <div class="container p-1 mt-4 bg-body-secondary">
@@ -22,15 +22,15 @@
     <div class="row">
         <div class="col-2"></div>
          <div class="col-2">
-             <a>Colour</a>
+             <a style="color:#5c5c8a; font-size:18px;">Colour</a>
              <h5 style="font-weight: bold;">@Model.mOTStatusDetails.VehicleColour</h5>
          </div>
          <div class="col-2">
-             <a>Fuel type</a>
+             <a style="color:#5c5c8a; font-size:18px;" >Fuel type</a>
              <h5 style="font-weight: bold;">@Model.mOTStatusDetails.FuelType</h5>
          </div>
          <div class="col-2">
-             <a>Date registered</a>
+             <a style="color:#5c5c8a; font-size:18px;">Date registered</a>
              <h5 style="font-weight: bold;">@Model.mOTStatusDetails.DateOfRegistration</h5>
          </div>
     </div>
@@ -41,7 +41,7 @@
         <div class="col-2"></div>
         <div class="col-8">
             <a style="font-size:20px;">MOT valid until</a>
-            <h3 style="font-weight: bold;">@Model.mOTStatusDetails.DateOfLastMOT</h3>
+            <h3 style="font-weight: bold;">@Model.mOTStatusDetails.DateOfLastMOT</h3><br />
             <p><a href="">Get an MOT reminder</a> by email or text</p>
             <div id="serviceLink"><a href="">Download test certificates</a><br /></div><br />
              <p>If you think the MOT expiry date or any of the vehicle details are wrong: <a href="">Contact DVSA</a></p>
@@ -50,15 +50,137 @@
 </div>
 
 
+<div class="container p-0 mt-0 bg-body-secondary">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+             <div class="showAllOptions" style="display:inline;">
+                 <img id="arrowIcon" src="~/images/chevron-down.png" width="17" height="17" />
+                 <button id="showMOTStatus" onclick="ShowAllOptions()"><span> Show all sections</span></button>
+            </div>
+            <div id="allOptions" style="display:none;">
+                  <p style="margin-left:10px; margin-top:10px;">
+                     Show all options here !!
+                  </p>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container p-0 mt-2 bg-body-secondary">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8" id="mOTDetails" style="border-top: 1pt solid #b3b3cc; padding-top:5px; padding-bottom:25px;">
+              <h5 style="font-weight: bold;">MOT History</h5>
+              <p style="margin-bottom:5px;">Check mileage recorded at test, expiry date and test outcome</p>
+            <div class="showMOTStatus" style="display:inline;">
+                 <img id="arrowIconMOTDetails" src="~/images/chevron-down.png" width="17" height="17" />
+                 <button id="showMOTStatus" onclick="ShowMOTStatus()"><span> Show</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="mOTDetailsInfo" style="display:none;">
+@foreach(var item in Model.mOTTestCertificateDetails)
+            {
+   <div class="container p-0 mt-0 bg-body-secondary">
+          <div class="row">
+             <div class="col-2"></div>
+               
+
+             <div class="col-8">
+                 <table style="width:100%;border-bottom: 1pt solid #b3b3cc; margin-top:15px;">
+                     <tr>
+                        <td width="33%">Date tested</td>
+                        <td width="33%">Mileage</td>
+                        <td width="33%">MOT test number</td>
+                     </tr>
+                     <tr>
+                         <td width="33%" style="font-weight: bold; font-size:20px;">@item.DateOfLastMOT</td>
+                         <td width="33%" style="font-weight: bold; font-size:20px;">@item.OdometerReading miles</td>
+                         <td width="33%" style="font-weight: bold; font-size:20px;">@item.MOTTestNumber</td>
+                     </tr>
+                     <tr>
+                         <td width="33%" style="font-size:40px; font-weight: bold; line-height: 0.75em; padding-top:15px;">PASS</td>
+                         <td width="33%">Test Location</td>
+                         <td width="33%">Expiry date</td>
+                     </tr>
+                     <tr>
+                         <td width="33%"></td>
+                         <td width="33%"></td>
+                         <td width="33%" style="font-weight: bold; padding-bottom:40px; line-height: 0.75em; font-size:20px;">@item.MOTDueDate</td>
+                     </tr>
+                     
+                </table>
+             </div>
+          </div>
+    </div> 
+   } 
+</div>
 
 
 
 
-<h5>MOT History</h5>
+<div class="container p-0 mt-0 bg-body-secondary">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8" id="recallDetails" style="border-top:1pt solid #b3b3cc; border-bottom: 1pt solid #b3b3cc; padding-top:5px; padding-bottom:25px;">
+              <h5 style="font-weight: bold;">Check for vehicle recalls</h5>
+              <p style="margin-bottom:5px;">See if @Model.mOTStatusDetails.Make @Model.mOTStatusDetails.Model @Model.mOTStatusDetails.RegistrationNumber has outstanding recalls</p>
+            <div class="showVehicleRecall" style="display:inline;">
+                 <img id="arrowIcon" src="~/images/chevron-down.png" width="17" height="17" />
+                 <button id="showVehicleRecall" onclick="ShowVehicleRecall()"><span> Show</span></button>
+            </div>
+            
+            <div id="mOTDetailsInfo" style="display:none;">
+                  <p style="margin-left:10px; margin-top:10px;">
+                     Recall Info here !!
+                  </p>        
+            </div>
+        </div>
+    </div>
+</div>
 
-@foreach(var item in Model.mOTTestCertificateDetails){
-    <h5>
-        @item.DateOfLastMOT
-    </h5> 
-}
 
+
+<script>
+    function ShowAllOptions() {
+
+      //var x = document.getElementById("mOTDetailsInfo");
+      //    if (x.style.display === "none") {
+      //      x.style.display = "block";
+      //    } else {
+      //      x.style.display = "none";
+      //    }
+
+    var arrow = document.getElementById("arrowIcon");
+     if(arrow.src === 'https://localhost:7131/images/chevron-down.png'){
+         arrow.src = 'https://localhost:7131/images/chevron-up.png';
+     } else {
+         arrow.src = 'https://localhost:7131/images/chevron-down.png';
+     }
+
+    }
+
+    function ShowMOTStatus() {
+        var x = document.getElementById("mOTDetailsInfo");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+
+    var arrow = document.getElementById("arrowIconMOTDetails");
+     if(arrow.src === 'https://localhost:7131/images/chevron-down.png'){
+         arrow.src = 'https://localhost:7131/images/chevron-up.png';
+     } else {
+         arrow.src = 'https://localhost:7131/images/chevron-down.png';
+     }
+    }
+
+
+
+</script>

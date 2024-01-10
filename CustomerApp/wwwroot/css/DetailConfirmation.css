@@ -58,9 +58,7 @@ input {
     background: none !important;
     border: none;
     padding: 0 !important;
-    /*optional*/
     font-family: arial, sans-serif;
-    /*input has OS specific font-family*/
     color: #0059b3;
     text-decoration: underline;
     cursor: pointer;
@@ -70,4 +68,14 @@ input {
     border-left-style: solid;
     border-left-color: #b3b3b3;
     border-width: 4px;
+}
+
+#showMOTStatus {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    font-family: arial, sans-serif;
+    color: #0059b3;
+    text-decoration: underline;
+    cursor: pointer;
 }
