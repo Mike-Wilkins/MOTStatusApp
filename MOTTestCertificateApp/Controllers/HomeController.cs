@@ -66,14 +66,15 @@ namespace MOTTestCertificateApp.Controllers
             var details = _statusDetailsRepository.GetStatusDetails().
                 Where(d => d.RegistrationNumber == registration.ToUpper()).FirstOrDefault();
 
-            var testDetailsCount = (_testDetailsRepository.GetTestCertificateDetails().Count())+1;
+            var mostRecentTestCertificate = _testDetailsRepository.GetTestCertificateDetails().MaxBy(x => x.MOTTestNumber);
+
             var certificateDetails = new MOTTestCertificateDetails();
             certificateDetails.RegistrationNumber = details.RegistrationNumber;
             certificateDetails.FuelType = details.FuelType;
             certificateDetails.Colour = details.VehicleColour;
             certificateDetails.DateOfRegistration = details.DateOfRegistration;
             certificateDetails.Make = details.Make;
-            certificateDetails.MOTTestNumber = testDetailsCount.ToString();
+            certificateDetails.MOTTestNumber = (int.Parse(mostRecentTestCertificate.MOTTestNumber) + 1).ToString();
             certificateDetails.DateOfLastMOT = DateTime.Now.ToString("g");
             certificateDetails.Model = details.Model;
             certificateDetails.VehicleID = details.VehicleID;
@@ -83,15 +84,37 @@ namespace MOTTestCertificateApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(MOTTestCertificateDetails testCertificateData)
-        {
+        public IActionResult Create(MOTTestCertificateDetails testCertificateData, IFormCollection fc)
+        {        
+            string mOTFailureList = fc["failureList"];
+
+            ModelState.Remove(nameof(testCertificateData.AdvisoryNoticeIssued));
+            ModelState.Remove(nameof(testCertificateData.ReasonForFailure));
+
+            if (testCertificateData.TestResult == "PASS")
+            {
+                ModelState.Remove(nameof(testCertificateData.ReasonForFailure));
+                testCertificateData.ReasonForFailure = "N/A";
+            }
+
+            if(testCertificateData.TestResult == "FAIL")
+            {
+                testCertificateData.MOTDueDate = DateTime.Now.ToString("dd/MM/yyyy");
+                testCertificateData.ReasonForFailure = mOTFailureList;           
+            }
+
+            if(testCertificateData.AdvisoryNoticeIssued == null)
+            {
+                testCertificateData.AdvisoryNoticeIssued = "NO";
+                testCertificateData.AdvisoryNotice = "N/A";
+            }
 
             if (!ModelState.IsValid)
             {
                 return View(testCertificateData);
             }
 
-            _testDetailsRepository.Add(testCertificateData);
+             _testDetailsRepository.Add(testCertificateData);
 
             return View(testCertificateData);
         }

@@ -39,6 +39,14 @@ namespace MOTStatusWebApi.Models
         [Display(Name = "Date of Registration")]
         public string? DateOfRegistration { get; set; }
 
+        [Display(Name = "Test Passed?")]
+        public string? TestResult { get; set; }
+
+        [Display(Name = "Reason(s) for vehicle failure")]
+        [Required(ErrorMessage = "MOT failure details are required")]
+        public string? ReasonForFailure { get; set; }
+        public string? AdvisoryNotice { get; set; }
+
         [Display(Name = "MOT Due Data")]
         public string? MOTDueDate { get; set; }
 

@@ -104,7 +104,13 @@
                          <td width="33%" style="font-weight: bold; font-size:20px;">@item.MOTTestNumber</td>
                      </tr>
                      <tr>
-                         <td width="33%" style="font-size:40px; font-weight: bold; line-height: 0.75em; padding-top:15px;">PASS</td>
+                            @if(item.TestResult == "PASS")
+                            {
+                                <td width="33%" style="font-size:40px; font-weight: bold; line-height: 0.75em; padding-top:15px; color:green">PASS</td>
+                                
+                            }else{
+                                 <td width="33%" style="font-size:40px; font-weight: bold; line-height: 0.75em; padding-top:15px; color:red">FAIL</td>
+                            }
                          <td width="33%">Test Location</td>
                          <td width="33%">Expiry date</td>
                      </tr>

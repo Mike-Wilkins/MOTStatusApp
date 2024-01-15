@@ -50,13 +50,23 @@ namespace MOTStatusWebApi.Controllers
                 {
                     details.MOTDueDate = registrastionDate.AddYears(3).ToString("dd/MM/yyyy");
                     details.DateOfLastMOT = details.DateOfRegistration;
+                    details.MOTed = false;
                 }
                 else
                 {
-                    var latestMOTCert = MOTList.Max(m => m.MOTTestNumber);
-                    var mOTDueDate = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.MOTTestNumber == latestMOTCert).FirstOrDefault();
-                    details.MOTDueDate = mOTDueDate.MOTDueDate;
-                    details.DateOfLastMOT = mOTDueDate.DateOfLastMOT;
+                    var latestMOTCertNumber = MOTList.Max(m => m.MOTTestNumber);
+                    var latestMOTCert = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.MOTTestNumber == latestMOTCertNumber).FirstOrDefault();
+                    details.MOTDueDate = latestMOTCert.MOTDueDate;
+                    details.DateOfLastMOT = latestMOTCert.DateOfLastMOT;
+
+                    if (latestMOTCert.TestResult == "PASS")
+                    {
+                        details.MOTed = true;
+                    }
+                    else
+                    {
+                        details.MOTed = false;
+                    }
                 }
             }
 
@@ -65,10 +75,11 @@ namespace MOTStatusWebApi.Controllers
             {
                 details.MOTDueDate = registrastionDate.AddYears(3).ToString("dd/MM/yyyy");
                 details.DateOfLastMOT = details.DateOfRegistration;
+                details.MOTed = true;
             }
 
-            details.Taxed = IsVehicleTaxedAndMOTed(details.TaxDueDate); 
-            details.MOTed = IsVehicleTaxedAndMOTed(details.MOTDueDate);
+            details.Taxed = IsVehicleTaxed(details.TaxDueDate); 
+           // details.MOTed = IsVehicleTaxedAndMOTed(details.MOTDueDate);
            
 
             if (details.Taxed)
@@ -89,7 +100,7 @@ namespace MOTStatusWebApi.Controllers
             return (result);
         }
 
-        public static bool IsVehicleTaxedAndMOTed(string date)
+        public static bool IsVehicleTaxed(string date)
         {
             DateTime dueDate = DateTime.Parse(date);
 

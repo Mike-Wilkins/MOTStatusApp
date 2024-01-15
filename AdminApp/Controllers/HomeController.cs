@@ -185,13 +185,24 @@ namespace AdminApp.Controllers
                 {
                     details.MOTDueDate = registrastionDate.AddYears(3).ToString("dd/MM/yyyy");
                     details.DateOfLastMOT = details.DateOfRegistration;
+                    details.MOTed = false;
                 }
                 else
                 {
-                    var latestMOTCert = MOTList.Max(m => m.MOTTestNumber);
-                    var mOTDueDate = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.MOTTestNumber == latestMOTCert).FirstOrDefault();
-                    details.MOTDueDate = mOTDueDate.MOTDueDate;
-                    details.DateOfLastMOT = mOTDueDate.DateOfLastMOT;
+                    var latestMOTCertNumber = MOTList.Max(m => m.MOTTestNumber);
+                    var latestMOTCert = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.MOTTestNumber == latestMOTCertNumber).FirstOrDefault();
+                    details.MOTDueDate = latestMOTCert.MOTDueDate;
+                    details.DateOfLastMOT = latestMOTCert.DateOfLastMOT;
+
+                    if (latestMOTCert.TestResult == "PASS")
+                    {
+                        details.MOTed = true;
+                    }
+                    else
+                    {
+                        details.MOTed = false;
+                    }
+
                 }
 
             }
@@ -201,6 +212,7 @@ namespace AdminApp.Controllers
             {
                 details.MOTDueDate = registrastionDate.AddYears(3).ToString();
                 details.DateOfLastMOT = details.DateOfRegistration;
+                details.MOTed = true;
             }
 
             details = FormatObjectDetails(details);
@@ -217,8 +229,7 @@ namespace AdminApp.Controllers
             details.DateOfLastV5C = FormatDate(details.DateOfLastV5C);
             details.DateOfLastMOT = FormatDate(details.DateOfLastMOT);
             details.TaxDueDate = UpdateVehicleDueDate(details.DateOfLastV5C);
-            details.Taxed = IsVehicleTaxedAndMOTed(details.TaxDueDate);
-            details.MOTed = IsVehicleTaxedAndMOTed(details.MOTDueDate);
+            details.Taxed = IsVehicleTaxed(details.TaxDueDate);
             details.VehicleStatus = IsTaxedLabel(details.Taxed);
 
             return (details);
@@ -250,7 +261,7 @@ namespace AdminApp.Controllers
             return (result);
         }
 
-        public static bool IsVehicleTaxedAndMOTed(string date)
+        public static bool IsVehicleTaxed(string date)
         {
             DateTime dueDate = DateTime.Parse(date);
 

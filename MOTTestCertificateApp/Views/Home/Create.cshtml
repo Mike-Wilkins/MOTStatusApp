@@ -9,6 +9,15 @@
     <link href="~/css/Create.css" rel="stylesheet" type="text/css"/>
 </head>
 
+<style>
+
+#addButton{
+    
+}
+
+
+
+</style>
 
  @*<a class="text-info"><img src="/images/vosa_logo.png" alt="images" style="width:280px; height:90px; position: absolute;top: 90px;right: 50px;"/></a*@
 
@@ -27,13 +36,41 @@
               </div>
           </div>
 
+          <div class="container p-3">
+              <div class="row pt-0">
+                  <div class="col-6" style="background:#339966;">
+                      <div class="mb-3" style="margin-top:20px;">
+                            <label asp-for="TestResult" class="attribute"></label>
+                            <select asp-for="TestResult" class="form-select" id="testResult">
+                                    <option value="PASS">Yes</option>
+                                    <option value="FAIL" id="testResult">No</option>                                            
+                            </select>
+
+                            <div id="testFailureDetails1" style="display:none;">
+                                <div class="mb-3" id="failure1" style="margin-top:20px;">
+                                  <div id="divCont">
+                                        <div><input type="text" name="failureList" style="width:500px; height:40px; margin-right:20px; margin-bottom:10px;" /><input type="button" onclick="AddTextBox()" value="Add" class="btn btn-success btn-outline-light btn-sm" style="margin-top:0px;"/></div>
+                                    </div><br/>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+                  <div class="col-6" style="background:#339966;">
+                      <div class="mb-3" style="margin-top:20px;">
+                            <label asp-for="AdvisoryNotice" class="attribute"></label>
+                            <input asp-for="AdvisoryNotice" class="form-control" type="text" value="@Model.AdvisoryNotice"/>
+                           
+                        </div>
+                  </div>
+              </div>
+          </div>
+
            <div class="container p-3">
                 <div class="row pt-0">
                     <div class="col-4" style="background:#339966;">
                         <div class="mb-3" style="margin-top:20px;">
                             <label asp-for="MOTTestNumber" class="attribute"></label>
-                            <input asp-for="MOTTestNumber" class="form-control" type="text" value="@Model.MOTTestNumber" readonly="readonly"/>
-                           
+                            <input asp-for="MOTTestNumber" class="form-control" type="text" value="@Model.MOTTestNumber" readonly="readonly"/>                  
                         </div>
                         <div class="mb-3">
                             <label asp-for="Make" class="attribute"></label>
@@ -61,13 +98,14 @@
                             <label asp-for="VehicleID" class="attribute"></label>
                             <input asp-for="VehicleID" class="form-control" type="text" value="@Model.VehicleID" readonly="readonly"/>
                         </div>
-                         <div class="mb-3">
-                            <label asp-for="Colour" class="attribute"></label>
-                            <input asp-for="Colour" class="form-control" type="text" value="@Model.Colour" readonly="readonly"/>
-                        </div>
+                        
                     </div>
                     <div class="col-4" style="background:#339966;">
                          <div class="mb-3" style="margin-top:20px;">
+                            <label asp-for="Colour" class="attribute"></label>
+                            <input asp-for="Colour" class="form-control" type="text" value="@Model.Colour" readonly="readonly"/>
+                        </div>
+                         <div class="mb-3">
                             <label asp-for="DateOfRegistration" class="attribute"></label>
                             <input asp-for="DateOfRegistration" class="form-control" type="text" value="@Model.DateOfRegistration" readonly="readonly"/>
                         </div>
@@ -91,17 +129,14 @@
                             <label asp-for="DesignGrossWeight" class="attribute"></label>
                             <input asp-for="DesignGrossWeight" class="form-control"/>
                         </div>
-                          <div class="mb-3">
-                            <label asp-for="AdvisoryNoticeIssued" class="attribute"></label>
-                            <input asp-for="AdvisoryNoticeIssued" class="form-control"/>
-                        </div>
-                         <div class="mb-3">
+                        
+                    </div>
+                    <div class="col-4" style="background:#339966;">
+                         <div class="mb-3" style="margin-top:20px;">
                             <label asp-for="TestStationNumber" class="attribute"></label>
                             <input asp-for="TestStationNumber" class="form-control"/>
                         </div>
-                    </div>
-                    <div class="col-4" style="background:#339966;">
-                        <div class="mb-3" style="margin-top:20px;">
+                        <div class="mb-3">
                             <label asp-for="SeatBeltChecked" class="attribute"></label>
                             <input asp-for="SeatBeltChecked" class="form-control"/>
                         </div>
@@ -133,3 +168,38 @@
       </div>
 
  </form>
+
+ <script>
+    
+     document.getElementById('testResult').addEventListener('change',showTextBox)
+
+     function showTextBox(){
+         //alert("failure text box")
+
+         var x = document.getElementById("testFailureDetails1");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+     }
+
+       function GetDynamicTextbox(value) {
+
+            return '<div><input type="text" name="failureList" style="width:500px; height:40px; margin-right:20px; margin-bottom:10px;"/><input type="button" onclick="RemoveTextBox(this)" value="Remove" class="btn btn-danger btn-outline-light btn-sm" /></div>';
+
+        }
+
+        function AddTextBox() {
+            var div = document.createElement('DIV');
+            div.innerHTML = GetDynamicTextbox("");
+            document.getElementById("divCont").appendChild(div);
+        }
+
+        function RemoveTextBox(div) {
+            document.getElementById("divCont").removeChild(div.parentNode.parentNode);
+        }
+
+
+
+ </script>
