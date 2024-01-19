@@ -13,5 +13,6 @@ namespace CustomerApp.ViewModels
         public bool RegistrationFormatError { get; set; }
         public bool RegistrationNotFoundError { get; set; }
         public bool ConfirmNotSelectedError { get; set; }
+        public List<string> FailureList { get; set; }
     }
 }

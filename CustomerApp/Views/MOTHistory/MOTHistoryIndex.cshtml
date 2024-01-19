@@ -90,9 +90,8 @@
           <div class="row">
              <div class="col-2"></div>
                
-
              <div class="col-8">
-                 <table style="width:100%;border-bottom: 1pt solid #b3b3cc; margin-top:15px;">
+                 <table style="width:100%; margin-top:15px; border-top:1pt solid #b3b3cc;">
                      <tr>
                         <td width="33%">Date tested</td>
                         <td width="33%">Mileage</td>
@@ -112,22 +111,53 @@
                                  <td width="33%" style="font-size:40px; font-weight: bold; line-height: 0.75em; padding-top:15px; color:red">FAIL</td>
                             }
                          <td width="33%">Test Location</td>
-                         <td width="33%">Expiry date</td>
+
+                            @if(item.TestResult == "PASS")
+                            {
+                                <td width="33%">Expiry date</td>
+                            }                      
+                        </tr>
+                     <tr>
+                         <td width="33%"></td>
+                         <td width="33%">View test location</td>
+
+                            @if(item.TestResult == "PASS")
+                            {
+                                 <td width="33%" style="font-weight: bold; padding-bottom:40px; line-height: 0.75em; font-size:20px;">@item.MOTDueDate</td>
+                            }
+                           
                      </tr>
                      <tr>
                          <td width="33%"></td>
+                            @if(item.TestResult == "FAIL")
+                            {
+                                <td style="padding-top:15px;" width="33%">Reason(s) for failure</td>
+                            }
                          <td width="33%"></td>
-                         <td width="33%" style="font-weight: bold; padding-bottom:40px; line-height: 0.75em; font-size:20px;">@item.MOTDueDate</td>
                      </tr>
-                     
+                </table>
+
+                <table style="width:100%;" >
+                        @if(item.TestResult == "FAIL")
+                        {
+                            for(int i=0; i < Model.FailureList.Count; i++)
+                            {
+                                <tr>
+                                    <td width="33%"></td>
+                                    <td width="70%" style="font-weight: bold; font-size:15px; line-height:1;">&#x2022; @Model.FailureList[i]</td>
+                                </tr>                          
+                            }
+                            <tr>
+                                <td width="33%"></td>
+                                <td style="padding-top:15px; padding-bottom:15px;">What are failures?</td>
+                            </tr>
+                        }
                 </table>
              </div>
           </div>
     </div> 
    } 
 </div>
-
-
 
 
 <div class="container p-0 mt-0 bg-body-secondary">

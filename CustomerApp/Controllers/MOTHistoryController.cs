@@ -19,12 +19,14 @@ namespace CustomerApp.Controllers
 
         public IActionResult MOTHistoryIndex(string vehicleId, string dateOfRegistration, string dateOfLastMOT)
         {
-            _viewData.mOTTestCertificateDetails = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.VehicleID == vehicleId).ToList();
+            _viewData.mOTTestCertificateDetails = _testDetailsRepository.GetTestCertificateDetails().Where(d => d.VehicleID == vehicleId).ToList().OrderByDescending(x => x.MOTTestNumber);
 
             _viewData.mOTStatusDetails = _statusDetailsRepository.GetStatusDetails().Where(d => d.VehicleID == vehicleId).FirstOrDefault();
 
             _viewData.mOTStatusDetails.DateOfRegistration = dateOfRegistration;
             _viewData.mOTStatusDetails.DateOfLastMOT = dateOfLastMOT;
+
+            
 
             foreach (var item in _viewData.mOTTestCertificateDetails)
             {
@@ -33,11 +35,29 @@ namespace CustomerApp.Controllers
 
                 var mileage = Int32.Parse(item.OdometerReading);
                 item.OdometerReading = String.Format("{0:#,##0.##}", mileage);
+
+                if(item.TestResult == "FAIL")
+                {
+                    List<string> failureList = FormatFailureList(item.ReasonForFailure);
+                    _viewData.FailureList = failureList;
+                }
+
+              
+             
+                
             }
 
-
+            
+            
 
             return View(_viewData);
+        }
+
+        private List<string> FormatFailureList(string mOTFailures)
+        {
+            List<string> result = mOTFailures.Split(',').ToList();
+
+            return(result);
         }
 
         private string FormatDate(string detailsDate)
