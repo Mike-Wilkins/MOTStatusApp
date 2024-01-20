@@ -36,8 +36,29 @@
     background: #f2f2f2;
 }
 
+#whatAreFailures {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #0059b3;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left:10px;
+}
 
-
+#failureInfo {
+    border-left-style: solid;
+    border-left-color: #b3b3b3;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-width: 3px;
+    padding-left: 20px;
+   
+}
 
 /*
     #showMOTStatus:hover:before {

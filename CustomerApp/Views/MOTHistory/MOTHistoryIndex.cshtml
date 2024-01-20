@@ -148,11 +148,29 @@
                                 </tr>                          
                             }
                             <tr>
-                                <td width="33%"></td>
-                                <td style="padding-top:15px; padding-bottom:15px;">What are failures?</td>
+                                <td width="33%"></td> 
+                   
+                                <td width="70%" style="padding-top:15px; padding-bottom:15px;">
+                                  <img id="BlueArrowIcon" src="~/images/blue-right-arrow.png" width="12" height="12"/> 
+                                  <button id="whatAreFailures" onclick="ShowFailureInfo()"> What are failures?</button>
+                                </td> 
                             </tr>
                         }
                 </table>
+                    @if (item.TestResult == "FAIL")
+                    {
+                        <table id="showFailureInfo" style="display:none;">
+
+                            <tr>
+                                <td width="36%"></td>
+                                <td id="failureInfo" width="60%">Failure items must be fixed before the vehicle can pass its MOT</td>
+                            </tr>
+                            <tr>
+                                <td width="36%"></td>
+                                <td width="60%" style="padding-bottom:35px;"></td>
+                            </tr>               
+                </table>
+                }
              </div>
           </div>
     </div> 
@@ -217,6 +235,20 @@
      }
     }
 
+    function ShowFailureInfo() {
+      var x = document.getElementById("showFailureInfo");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
 
+    var arrow = document.getElementById("BlueArrowIcon");
+     if(arrow.src === 'https://localhost:7131/images/blue-right-arrow.png'){
+         arrow.src = 'https://localhost:7131/images/blue-down-arrow.png';
+     } else {
+         arrow.src = 'https://localhost:7131/images/blue-right-arrow.png';
+     }
+}
 
 </script>
